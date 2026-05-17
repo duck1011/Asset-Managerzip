@@ -47,7 +47,7 @@ const translations = {
       mission:
         "We help small businesses compete with enterprise-grade digital strategy, design, and marketing — without the enterprise price tag.",
       aboutText:
-        "Founded in 2018, BrightEdge Digital is a boutique digital agency specializing in brand identity, web design, SEO, and paid advertising. Our team of 12 specialists has helped over 200 clients across retail, healthcare, real estate, and professional services achieve measurable growth. We believe every business deserves a world-class digital presence.",
+        "Founded in 2018, NorthSouth is a boutique digital agency specializing in brand identity, web design, SEO, and paid advertising. Our team of 12 specialists has helped over 200 clients across retail, healthcare, real estate, and professional services achieve measurable growth. We believe every business deserves a world-class digital presence.",
     },
 
     // Services page
@@ -241,7 +241,7 @@ const translations = {
       mission:
         "Kami membantu bisnis kecil bersaing dengan strategi digital, desain, dan pemasaran berkelas enterprise — tanpa harga enterprise.",
       aboutText:
-        "Didirikan pada 2018, BrightEdge Digital adalah agensi digital boutique yang mengkhususkan diri dalam identitas merek, desain web, SEO, dan iklan berbayar. Tim 12 spesialis kami telah membantu lebih dari 200 klien di bidang ritel, kesehatan, properti, dan layanan profesional mencapai pertumbuhan yang terukur. Kami percaya setiap bisnis berhak mendapatkan kehadiran digital berkelas dunia.",
+        "Didirikan pada 2018, NorthSouth adalah agensi digital boutique yang mengkhususkan diri dalam identitas merek, desain web, SEO, dan iklan berbayar. Tim 12 spesialis kami telah membantu lebih dari 200 klien di bidang ritel, kesehatan, properti, dan layanan profesional mencapai pertumbuhan yang terukur. Kami percaya setiap bisnis berhak mendapatkan kehadiran digital berkelas dunia.",
     },
 
     // Services page

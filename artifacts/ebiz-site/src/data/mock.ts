@@ -1,9 +1,9 @@
 export const profile = {
-  companyName: "BrightEdge Digital",
+  companyName: "NorthSouth",
   tagline: "Grow Smarter. Reach Further.",
   mission: "We help small businesses compete with enterprise-grade digital strategy, design, and marketing — without the enterprise price tag.",
-  aboutText: "Founded in 2018, BrightEdge Digital is a boutique digital agency specializing in brand identity, web design, SEO, and paid advertising. Our team of 12 specialists has helped over 200 clients across retail, healthcare, real estate, and professional services achieve measurable growth. We believe every business deserves a world-class digital presence.",
-  brandColors: { primary: "#1D4ED8", secondary: "#7C3AED" },
+  aboutText: "Founded in 2018, NorthSouth is a boutique digital agency specializing in brand identity, web design, SEO, and paid advertising. Our team of 12 specialists has helped over 200 clients across retail, healthcare, real estate, and professional services achieve measurable growth. We believe every business deserves a world-class digital presence.",
+  brandColors: { primary: "#0B2545", secondary: "#13A4C2" },
 };
 
 export const services = [

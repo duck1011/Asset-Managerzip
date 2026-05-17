@@ -18,7 +18,6 @@ export function Navbar() {
     };
     refresh();
     window.addEventListener("storage", refresh);
-    // Re-check on route changes
     const interval = setInterval(refresh, 1000);
     return () => {
       window.removeEventListener("storage", refresh);
@@ -40,9 +39,15 @@ export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" data-testid="navbar">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2" data-testid="link-logo">
-          <div className="w-8 h-8 rounded bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-xl">B</span>
+
+        {/* Logo — Variation 1: crops to NX mark (left portion of brand image) */}
+        <Link href="/" className="flex items-center gap-2.5" data-testid="link-logo">
+          <div style={{ width: "52px", height: "40px", overflow: "hidden", flexShrink: 0 }}>
+            <img
+              src="/logo.png"
+              alt={profile.companyName}
+              style={{ width: "332px", height: "160px", marginTop: "-60px" }}
+            />
           </div>
           <span className="font-bold text-lg tracking-tight">{profile.companyName}</span>
         </Link>
@@ -97,7 +102,6 @@ export function Navbar() {
 
         {/* Mobile Row */}
         <div className="md:hidden flex items-center gap-2">
-          {/* Mobile Dashboard Badge */}
           <Link href="/dashboard" className="relative p-2 text-muted-foreground" data-testid="link-mobile-dashboard-icon">
             <LayoutDashboard className="w-5 h-5" />
             {bookingCount > 0 && (
@@ -106,8 +110,6 @@ export function Navbar() {
               </span>
             )}
           </Link>
-
-          {/* Mobile Language Switcher */}
           <button
             onClick={() => setLang(otherLang)}
             className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-primary transition-colors border border-border rounded px-2 py-1"
@@ -116,7 +118,6 @@ export function Navbar() {
             <Globe className="w-3 h-3" />
             {langLabel}
           </button>
-
           <button
             className="p-2 text-foreground"
             onClick={() => setIsOpen(!isOpen)}
