@@ -1,0 +1,36 @@
+Act as a Senior Frontend Developer. We are rebranding the existing Next.js e-business website. The new brand name is "NorthSouth". We are updating the typography and color palette to achieve a premium, structural, modern SaaS aesthetic.
+
+Execute the following changes across the codebase:
+
+1. GLOBAL FONT UPDATE (Space Grotesk)
+
+We are replacing the default font with 'Space Grotesk'.
+Since we are using Next.js App Router, import Space Grotesk from next/font/google in app/layout.jsx.
+Assign it to the variable spaceGrotesk with weights: [500, 700].
+Apply the spaceGrotesk.className to the main <body> tag so it applies globally.
+Remove any previous font imports (like Inter).
+2. GLOBAL COLOR PALETTE UPDATE (No more plain black)
+
+Plain black (#000000) is banned. We are using "Midnight Slate" (#0F172A) which is Tailwind's slate-900.
+Update the tailwind.config.js or ensure you are utilizing Tailwind's built-in slate-900 for all primary text colors instead of black or gray-900.
+Our primary accent color is "Electric Cyan" (#06B6D4), which is Tailwind's cyan-500.
+3. NAVBAR LOGO REBRAND (components/Navbar.jsx or equivalent)
+
+Change the site name text to "NorthSouth".
+The text must be split into two spans for color contrast:
+"North" should be colored text-slate-900 (Midnight Slate).
+"South" should be colored text-cyan-500 (Electric Cyan).
+Apply the following Tailwind classes to the outer text wrapper: text-2xl font-bold tracking-[-0.04em] font-space-grotesk (if the font variable isn't applying via body, otherwise just use the variable class).
+The negative tracking (-0.04em) is crucial to make it look like a tight, geometric, structural logo.
+Ensure the logo icon is still present to the left of the text.
+4. FOOTER LOGO UPDATE (components/Footer.jsx or equivalent)
+
+Apply the exact same "NorthSouth" text styling as the Navbar.
+However, because the footer background is dark (bg-slate-900), change the text colors:
+"North" should be text-white.
+"South" should be text-cyan-400 (slightly lighter cyan for dark mode contrast).
+5. GLOBAL TYPOGRAPHY SWEEP
+
+Scan the codebase for any instances of text-gray-900 or text-black on headings or primary text, and change them to text-slate-900 to ensure color consistency across the site.
+Do not change any of the booking logic, dashboard, or structural layouts. Only modify the branding, fonts, and colors as specified above.
+

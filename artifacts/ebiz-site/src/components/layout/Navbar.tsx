@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X, Globe, LayoutDashboard } from "lucide-react";
-import { profile } from "@/data/mock";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -40,16 +39,16 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" data-testid="navbar">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
 
-        {/* Logo — Variation 1: crops to NX mark (left portion of brand image) */}
+        {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5" data-testid="link-logo">
-          <div style={{ width: "52px", height: "40px", overflow: "hidden", flexShrink: 0 }}>
-            <img
-              src="/logo.png"
-              alt={profile.companyName}
-              style={{ width: "332px", height: "160px", marginTop: "-60px" }}
-            />
-          </div>
-          <span className="font-bold text-lg tracking-tight">{profile.companyName}</span>
+          <img src="/logo-icon.png" alt="NorthSouth icon" className="h-9 w-9 object-contain" />
+          <span
+            className="text-2xl font-bold"
+            style={{ letterSpacing: "-0.04em" }}
+          >
+            <span className="text-slate-900">North</span>
+            <span style={{ color: "#06B6D4" }}>South</span>
+          </span>
         </Link>
 
         {/* Desktop Nav */}
