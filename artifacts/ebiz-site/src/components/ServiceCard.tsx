@@ -10,12 +10,21 @@ interface ServiceCardProps {
   description: string;
   price: string;
   iconName: string;
+  onSelect?: (id: number) => void;
 }
 
-export function ServiceCard({ id, title, description, price, iconName }: ServiceCardProps) {
+export function ServiceCard({ id, title, description, price, iconName, onSelect }: ServiceCardProps) {
   const [selected, setSelected] = useState(false);
   const { t } = useLanguage();
   const Icon = (Icons as any)[iconName] || Icons.HelpCircle;
+
+  const handleClick = () => {
+    if (onSelect) {
+      onSelect(id);
+    } else {
+      setSelected(!selected);
+    }
+  };
 
   return (
     <Card className={`transition-all duration-200 border-2 ${selected ? 'border-primary shadow-md' : 'border-border hover:border-primary/50'}`} data-testid={`card-service-${id}`}>
@@ -33,7 +42,7 @@ export function ServiceCard({ id, title, description, price, iconName }: Service
         <Button
           variant={selected ? "default" : "outline"}
           className="w-full"
-          onClick={() => setSelected(!selected)}
+          onClick={handleClick}
           data-testid={`button-select-service-${id}`}
         >
           {selected ? t.serviceCard.selected : t.serviceCard.select}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { CheckCircle, Loader2 } from "lucide-react";
@@ -7,9 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { generateShortId } from "@/lib/id";
 
 export default function Consultation() {
   const { t } = useLanguage();
+  const [, setLocation] = useLocation();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [need, setNeed] = useState("");
@@ -20,12 +23,19 @@ export default function Consultation() {
     e.preventDefault();
     setLoading(true);
     setTimeout(() => {
-      toast.success(t.consultation.toastSuccess);
-      setName("");
-      setEmail("");
-      setNeed("");
-      setDate("");
-      setLoading(false);
+      const consultation = {
+        id: generateShortId(),
+        type: "consultation",
+        name,
+        email,
+        need,
+        date,
+        createdAt: new Date().toISOString(),
+      };
+      const existing = JSON.parse(localStorage.getItem("consultations") || "[]");
+      localStorage.setItem("consultations", JSON.stringify([consultation, ...existing]));
+      toast.success("Confirmation sent to your phone!");
+      setLocation("/consultation/receipt");
     }, 1000);
   };
 
@@ -67,7 +77,7 @@ export default function Consultation() {
             </ul>
 
             <div className="mt-8 p-6 bg-primary/5 border border-primary/10 rounded-xl">
-              <p className="font-semibold text-foreground mb-1">hello@brightedgedigital.com</p>
+              <p className="font-semibold text-foreground mb-1">hello@northsouth.agency</p>
               <p className="text-sm text-muted-foreground">+1 (555) 123-4567</p>
             </div>
           </motion.div>

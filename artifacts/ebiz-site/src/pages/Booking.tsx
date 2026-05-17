@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
@@ -9,15 +9,18 @@ import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { generateShortId } from "@/lib/id";
 
 interface Booking {
   id: string;
+  type: "booking";
   service: (typeof services)[0] & { localizedTitle: string };
   date: string;
   timeSlot: string;
   name: string;
   email: string;
   phone: string;
+  status: "paid" | "pay_later";
   createdAt: string;
 }
 
@@ -41,30 +44,45 @@ export default function Booking() {
     localizedDescription: t.serviceData[i]?.description ?? s.description,
   }));
 
+  useEffect(() => {
+    const stored = localStorage.getItem("selectedService");
+    if (stored) {
+      const svc = JSON.parse(stored);
+      const matched = localizedServices.find((s) => s.id === svc.id);
+      if (matched) {
+        setSelectedService(matched);
+        setStep(2);
+      }
+      localStorage.removeItem("selectedService");
+    }
+  }, []);
+
   const timeLabel = (slot: string) => {
     if (slot === "morning") return t.booking.morning;
     if (slot === "afternoon") return t.booking.afternoon;
     return t.booking.evening;
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = (status: "paid" | "pay_later") => {
     setLoading(true);
     setTimeout(() => {
       const booking: Booking = {
-        id: `BK-${Date.now()}`,
+        id: generateShortId(),
+        type: "booking",
         service: selectedService!,
         date,
         timeSlot,
         name,
         email,
         phone,
+        status,
         createdAt: new Date().toISOString(),
       };
       const existing = JSON.parse(localStorage.getItem("userBookings") || "[]");
       localStorage.setItem("userBookings", JSON.stringify([booking, ...existing]));
-      toast.success(t.booking.toastSuccess);
+      toast.success(status === "paid" ? t.booking.toastSuccess : t.booking.toastPayLater);
       setLocation("/dashboard");
-    }, 1500);
+    }, 1200);
   };
 
   const stepTitles = [t.booking.step1Title, t.booking.step2Title, t.booking.step3Title];
@@ -151,7 +169,6 @@ export default function Booking() {
               transition={{ duration: 0.25 }}
               className="max-w-xl mx-auto space-y-6"
             >
-              {/* Date */}
               <div className="space-y-2">
                 <Label htmlFor="date">{t.booking.labelDate}</Label>
                 <Input
@@ -164,7 +181,6 @@ export default function Booking() {
                 />
               </div>
 
-              {/* Time Slots */}
               <div className="space-y-2">
                 <Label>{t.booking.labelTime}</Label>
                 <div className="grid grid-cols-3 gap-3">
@@ -185,7 +201,6 @@ export default function Booking() {
                 </div>
               </div>
 
-              {/* Name */}
               <div className="space-y-2">
                 <Label htmlFor="name">{t.booking.labelName}</Label>
                 <Input
@@ -197,7 +212,6 @@ export default function Booking() {
                 />
               </div>
 
-              {/* Email */}
               <div className="space-y-2">
                 <Label htmlFor="email">{t.booking.labelEmail}</Label>
                 <Input
@@ -210,7 +224,6 @@ export default function Booking() {
                 />
               </div>
 
-              {/* Phone */}
               <div className="space-y-2">
                 <Label htmlFor="phone">{t.booking.labelPhone}</Label>
                 <Input
@@ -268,13 +281,22 @@ export default function Booking() {
                 </div>
               </div>
 
-              <div className="flex gap-3">
-                <Button variant="outline" className="flex-1" onClick={() => setStep(2)} disabled={loading} data-testid="button-confirm-back">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button variant="outline" className="sm:flex-none" onClick={() => setStep(2)} disabled={loading} data-testid="button-confirm-back">
                   {t.booking.back}
                 </Button>
                 <Button
+                  variant="outline"
+                  className="flex-1 border-yellow-400 text-yellow-600 hover:bg-yellow-50"
+                  onClick={() => handleConfirm("pay_later")}
+                  disabled={loading}
+                  data-testid="button-pay-later"
+                >
+                  {t.booking.payLater}
+                </Button>
+                <Button
                   className="flex-1"
-                  onClick={handleConfirm}
+                  onClick={() => handleConfirm("paid")}
                   disabled={loading}
                   data-testid="button-confirm-pay"
                 >
@@ -284,7 +306,7 @@ export default function Booking() {
                       {t.booking.processing}
                     </span>
                   ) : (
-                    t.booking.confirmPay
+                    t.booking.payNow
                   )}
                 </Button>
               </div>

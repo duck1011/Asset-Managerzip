@@ -1,29 +1,55 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { CheckCircle, Printer, CalendarDays, Clock, Tag, CreditCard } from "lucide-react";
+import toast from "react-hot-toast";
+import { CheckCircle, Printer, CalendarDays, Clock, Tag, CreditCard, MessageSquare } from "lucide-react";
 import { format } from "date-fns";
 import { useLanguage } from "@/context/LanguageContext";
 import { Button } from "@/components/ui/button";
 
-interface Booking {
+interface BookingItem {
   id: string;
+  type?: "booking";
   service: { title: string; localizedTitle: string; price: string; icon: string };
   date: string;
   timeSlot: string;
   name: string;
   email: string;
   phone: string;
+  status?: "paid" | "pay_later";
   createdAt: string;
 }
 
+interface ConsultationItem {
+  id: string;
+  type: "consultation";
+  name: string;
+  email: string;
+  need: string;
+  date: string;
+  createdAt: string;
+}
+
+type DashboardItem =
+  | (BookingItem & { _kind: "booking" })
+  | (ConsultationItem & { _kind: "consultation" });
+
 export default function Dashboard() {
   const { t } = useLanguage();
-  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [items, setItems] = useState<DashboardItem[]>([]);
+
+  const loadItems = () => {
+    const bookings: BookingItem[] = JSON.parse(localStorage.getItem("userBookings") || "[]");
+    const consultations: ConsultationItem[] = JSON.parse(localStorage.getItem("consultations") || "[]");
+    const combined: DashboardItem[] = [
+      ...bookings.map((b) => ({ ...b, _kind: "booking" as const })),
+      ...consultations.map((c) => ({ ...c, _kind: "consultation" as const })),
+    ].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    setItems(combined);
+  };
 
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("userBookings") || "[]");
-    setBookings(stored);
+    loadItems();
   }, []);
 
   const timeLabel = (slot: string) => {
@@ -36,6 +62,28 @@ export default function Dashboard() {
     const d = new Date(dateStr + "T00:00:00");
     return format(d, "MMMM d, yyyy");
   };
+
+  const handlePayNow = (id: string) => {
+    const bookings: BookingItem[] = JSON.parse(localStorage.getItem("userBookings") || "[]");
+    const updated = bookings.map((b) => b.id === id ? { ...b, status: "paid" as const } : b);
+    localStorage.setItem("userBookings", JSON.stringify(updated));
+    toast.success("Payment confirmed!");
+    loadItems();
+  };
+
+  const handleCancel = (item: DashboardItem) => {
+    if (item._kind === "booking") {
+      const bookings: BookingItem[] = JSON.parse(localStorage.getItem("userBookings") || "[]");
+      localStorage.setItem("userBookings", JSON.stringify(bookings.filter((b) => b.id !== item.id)));
+    } else {
+      const consultations: ConsultationItem[] = JSON.parse(localStorage.getItem("consultations") || "[]");
+      localStorage.setItem("consultations", JSON.stringify(consultations.filter((c) => c.id !== item.id)));
+    }
+    toast.success(item._kind === "booking" ? t.dashboard.cancelToast : "Consultation cancelled.");
+    loadItems();
+  };
+
+  const bookings = items.filter((i) => i._kind === "booking") as (BookingItem & { _kind: "booking" })[];
 
   return (
     <div className="min-h-screen bg-background py-16 print:py-4">
@@ -64,8 +112,8 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* No Bookings State */}
-        {bookings.length === 0 && (
+        {/* Empty State */}
+        {items.length === 0 && (
           <div className="text-center py-24">
             <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mx-auto mb-6">
               <CalendarDays className="w-10 h-10 text-muted-foreground" />
@@ -78,77 +126,149 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Booking Receipt Cards */}
-        {bookings.length > 0 && (
+        {/* Cards */}
+        {items.length > 0 && (
           <div className="space-y-6">
-            {bookings.map((booking, i) => (
+            {items.map((item, i) => (
               <motion.div
-                key={booking.id}
+                key={item.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: i * 0.08 }}
                 className="bg-card border rounded-xl overflow-hidden print:border print:shadow-none print:mb-8 print:break-inside-avoid"
-                data-testid={`receipt-card-${booking.id}`}
+                data-testid={`receipt-card-${item.id}`}
               >
                 {/* Card Header */}
                 <div className="bg-primary/5 border-b px-6 py-4 flex items-center justify-between flex-wrap gap-3">
                   <div>
                     <p className="text-xs text-muted-foreground mb-1">{t.dashboard.receiptId}</p>
-                    <p className="font-mono font-bold text-sm">{booking.id}</p>
+                    <p className="font-mono font-bold text-sm">{item.id}</p>
                   </div>
-                  <div className="flex items-center gap-2 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-3 py-1.5 rounded-full text-sm font-semibold">
-                    <CheckCircle className="w-4 h-4" />
-                    {t.dashboard.statusPaid}
-                  </div>
+
+                  {item._kind === "booking" ? (
+                    <div className="flex items-center gap-2">
+                      {(item.status === "pay_later") ? (
+                        <span className="flex items-center gap-1.5 bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 px-3 py-1.5 rounded-full text-sm font-semibold">
+                          <Clock className="w-4 h-4" />
+                          {t.dashboard.statusPayLater}
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1.5 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-3 py-1.5 rounded-full text-sm font-semibold">
+                          <CheckCircle className="w-4 h-4" />
+                          {t.dashboard.statusPaid}
+                        </span>
+                      )}
+                    </div>
+                  ) : (
+                    <span className="flex items-center gap-1.5 bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400 px-3 py-1.5 rounded-full text-sm font-semibold">
+                      <MessageSquare className="w-4 h-4" />
+                      {t.dashboard.badgeConsultation}
+                    </span>
+                  )}
                 </div>
 
                 {/* Card Body */}
                 <div className="px-6 py-6 grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <div className="flex items-start gap-3">
-                    <Tag className="w-4 h-4 text-muted-foreground mt-1 shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">{t.dashboard.receiptService}</p>
-                      <p className="font-semibold">{booking.service.localizedTitle || booking.service.title}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <CalendarDays className="w-4 h-4 text-muted-foreground mt-1 shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">{t.dashboard.receiptDate}</p>
-                      <p className="font-semibold">{formatDate(booking.date)}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <Clock className="w-4 h-4 text-muted-foreground mt-1 shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">{t.dashboard.receiptTime}</p>
-                      <p className="font-semibold">{timeLabel(booking.timeSlot)}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <CreditCard className="w-4 h-4 text-muted-foreground mt-1 shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground mb-0.5">{t.dashboard.receiptPrice}</p>
-                      <p className="font-bold text-lg text-primary">{booking.service.price}</p>
-                    </div>
-                  </div>
+                  {item._kind === "booking" ? (
+                    <>
+                      <div className="flex items-start gap-3">
+                        <Tag className="w-4 h-4 text-muted-foreground mt-1 shrink-0" />
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-0.5">{t.dashboard.receiptService}</p>
+                          <p className="font-semibold">{item.service.localizedTitle || item.service.title}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CalendarDays className="w-4 h-4 text-muted-foreground mt-1 shrink-0" />
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-0.5">{t.dashboard.receiptDate}</p>
+                          <p className="font-semibold">{formatDate(item.date)}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <Clock className="w-4 h-4 text-muted-foreground mt-1 shrink-0" />
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-0.5">{t.dashboard.receiptTime}</p>
+                          <p className="font-semibold">{timeLabel(item.timeSlot)}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CreditCard className="w-4 h-4 text-muted-foreground mt-1 shrink-0" />
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-0.5">{t.dashboard.receiptPrice}</p>
+                          <p className="font-bold text-lg text-primary">{item.service.price}</p>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex items-start gap-3">
+                        <CalendarDays className="w-4 h-4 text-muted-foreground mt-1 shrink-0" />
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-0.5">Preferred Date</p>
+                          <p className="font-semibold">{formatDate(item.date)}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <Tag className="w-4 h-4 text-muted-foreground mt-1 shrink-0" />
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-0.5">Contact</p>
+                          <p className="font-semibold">{item.email}</p>
+                        </div>
+                      </div>
+                      <div className="md:col-span-2 flex items-start gap-3">
+                        <MessageSquare className="w-4 h-4 text-muted-foreground mt-1 shrink-0" />
+                        <div>
+                          <p className="text-xs text-muted-foreground mb-0.5">What you need help with</p>
+                          <p className="font-medium text-sm text-muted-foreground line-clamp-2">{item.need}</p>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 {/* Card Footer */}
-                <div className="px-6 pb-5 print:hidden">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => window.print()}
-                    className="gap-2"
-                    data-testid={`button-print-${booking.id}`}
+                <div className="px-6 pb-5 flex flex-wrap items-center gap-3 print:hidden">
+                  {item._kind === "booking" && (
+                    <>
+                      {item.status === "pay_later" && (
+                        <Button
+                          size="sm"
+                          className="gap-2"
+                          onClick={() => handlePayNow(item.id)}
+                          data-testid={`button-pay-now-${item.id}`}
+                        >
+                          <CreditCard className="w-4 h-4" />
+                          {t.dashboard.payNow}
+                        </Button>
+                      )}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => window.print()}
+                        className="gap-2"
+                        data-testid={`button-print-${item.id}`}
+                      >
+                        <Printer className="w-4 h-4" />
+                        {t.dashboard.printReceipt}
+                      </Button>
+                    </>
+                  )}
+                  {item._kind === "consultation" && (
+                    <Link href="/consultation/receipt">
+                      <Button variant="outline" size="sm" className="gap-2">
+                        <Printer className="w-4 h-4" />
+                        View Receipt
+                      </Button>
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => handleCancel(item)}
+                    className="text-sm text-muted-foreground hover:text-destructive transition-colors ml-auto"
+                    data-testid={`button-cancel-${item.id}`}
                   >
-                    <Printer className="w-4 h-4" />
-                    {t.dashboard.printReceipt}
-                  </Button>
+                    {t.dashboard.cancelBooking}
+                  </button>
                 </div>
               </motion.div>
             ))}

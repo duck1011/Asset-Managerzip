@@ -1,15 +1,25 @@
+import { useLocation } from "wouter";
 import { services } from "@/data/mock";
 import { ServiceCard } from "@/components/ServiceCard";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function Services() {
   const { t } = useLanguage();
+  const [, setLocation] = useLocation();
 
   const localizedServices = services.map((service, i) => ({
     ...service,
     title: t.serviceData[i]?.title ?? service.title,
     description: t.serviceData[i]?.description ?? service.description,
   }));
+
+  const handleSelectService = (id: number) => {
+    const service = localizedServices.find((s) => s.id === id);
+    if (service) {
+      localStorage.setItem("selectedService", JSON.stringify(service));
+      setLocation("/booking");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background py-16 lg:py-24">
@@ -30,6 +40,7 @@ export default function Services() {
               description={service.description}
               price={service.price}
               iconName={service.icon}
+              onSelect={handleSelectService}
             />
           ))}
         </div>
@@ -40,6 +51,7 @@ export default function Services() {
             {t.services.ctaDesc}
           </p>
           <button
+            onClick={() => setLocation("/consultation")}
             className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 px-8"
             data-testid="button-schedule-consultation"
           >

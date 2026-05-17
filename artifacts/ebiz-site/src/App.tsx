@@ -11,10 +11,12 @@ import Services from "@/pages/Services";
 import Media from "@/pages/Media";
 import Booking from "@/pages/Booking";
 import Consultation from "@/pages/Consultation";
+import ConsultationReceipt from "@/pages/ConsultationReceipt";
 import Dashboard from "@/pages/Dashboard";
 
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { Chatbot } from "@/components/Chatbot";
 import { LanguageProvider } from "@/context/LanguageContext";
 
 const queryClient = new QueryClient();
@@ -30,12 +32,14 @@ function Router() {
           <Route path="/services" component={Services} />
           <Route path="/media" component={Media} />
           <Route path="/booking" component={Booking} />
+          <Route path="/consultation/receipt" component={ConsultationReceipt} />
           <Route path="/consultation" component={Consultation} />
           <Route path="/dashboard" component={Dashboard} />
           <Route component={NotFound} />
         </Switch>
       </main>
       <Footer />
+      <Chatbot />
     </div>
   );
 }

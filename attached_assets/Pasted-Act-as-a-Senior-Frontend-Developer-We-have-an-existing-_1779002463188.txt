@@ -1,0 +1,58 @@
+Act as a Senior Frontend Developer. We have an existing Next.js (App Router) + Tailwind CSS e-business website. We have 7 critical updates and bug fixes to implement. We are using localStorage as our simulated backend.
+
+STRICT RULES:
+
+Maintain our brand aesthetic: Midnight Slate (slate-900), Electric Cyan (cyan-500), Space Grotesk font, Framer Motion for animations.
+Centralize localStorage logic. Read from localStorage only on component mount (use useEffect) to avoid hydration mismatches.
+No external Chatbot APIs. Build a custom UI chatbot with rule-based logic.
+No error handling (keep it lean).
+EXECUTE THE FOLLOWING 7 TASKS:
+
+TASK 1: Fix Consultation Dashboard Visibility (BUG)
+
+Issue: The Dashboard only shows paid bookings.
+Fix: Update the Dashboard (app/dashboard/page.jsx) to fetch ALL items from localStorage (both 'userBookings' and 'consultations'). Combine them into a single array. Add a visual badge to distinguish them: badge: "Paid" for bookings, badge: "Consultation" for consultations. Render them all in the dashboard grid.
+TASK 2: Fix Services Page Buttons (BUG)
+
+Issue: Buttons on the Services page are not functioning.
+Fix: Update app/services/page.jsx. The "Select Service" button must save the selected service object to a React context or localStorage (key: selectedService), and then route the user to /booking using useRouter.
+TASK 3: Media Studio Expansion & Custom Delete (UX UPDATE)
+
+Issue: Clicking an image does nothing; needs detail view and delete.
+Fix: In app/media/page.jsx:
+Remove any <Link> wrapping the image.
+OnClick: Use Framer Motion's <AnimatePresence> and <motion.div>. On click, expand the card in place (or open a sleek modal) showing the image's alt, category, and a "Download" button. Animate opacity and scale.
+Right-Click Delete: Add an onContextMenu handler to the image card. Call e.preventDefault(). On right-click, toggle a small dropdown menu directly over the card with a red "Delete Image" button that removes the item from the state array and localStorage.
+TASK 4: Consultation Confirmation & Downloadable Receipt (FEATURE)
+
+Issue: Needs real confirmation and receipt.
+Fix: In app/consultation/page.jsx:
+On submit, generate a simulated "SMS Sent" toast notification (react-hot-toast) saying "Confirmation sent to your phone!".
+Automatically route the user to a receipt page (/consultation/receipt).
+Create /consultation/receipt/page.jsx. It reads the latest consultation from localStorage. Design a clean, printable receipt layout (white background, black text, NorthSouth logo).
+Add a "Download Receipt" button that triggers window.print() using Tailwind's print: modifiers to hide the navbar/footer during printing.
+TASK 5: Shorten Booking/Receipt IDs (REFACTOR)
+
+Issue: BK-${Date.now()} is too long.
+Fix: Create a helper function generateShortId(). It should generate an ID like NS- + 5 random alphanumeric characters (e.g., NS-A3F9B). Apply this to both Booking and Consultation ID generation.
+TASK 6: Add "Pay Later" & Cancellation Options (FEATURE)
+
+Issue: Dashboard lacks payment flexibility and cancellation.
+Fix: In the Booking flow (app/booking/page.jsx Step 3), add two buttons: "Pay Now" (saves with status: 'paid') and "Pay Later" (saves with status: 'pay_later').
+In the Dashboard (app/dashboard/page.jsx):
+If status === 'pay_later', show a yellow "Pay Later" badge and a "Pay Now" button.
+For ALL dashboard cards, add a subtle "Cancel Booking" text link at the bottom.
+If clicked, remove the booking from the state array and localStorage. Show a toast: "Booking cancelled. Fully refunded."
+TASK 7: AI Booking Chatbot Assistant (FEATURE)
+
+Issue: Needs conversational UX for booking.
+Fix: Create a new component components/Chatbot.jsx.
+UI: A floating Cyan chat bubble icon in the bottom-right corner of the global layout. On click, it expands into a chat window (Framer Motion slide-up).
+Logic: Maintain a messages array in state.
+Initial bot message: "Hi! I'm NorthSouth AI. Want to book a service, schedule a consultation, or ask a question?"
+Provide Quick Reply buttons: "Book a Service", "Free Consultation".
+If user clicks "Book a Service", bot replies: "Great! What service are you interested in? [Service 1] [Service 2] [Service 3]".
+Clicking a service routes them directly to /booking with that service pre-selected.
+Add components/Chatbot.jsx to app/layout.jsx so it appears on every page.
+Execute these sequentially. Ensure localStorage reads are wrapped in useEffect to prevent Next.js server-side hydration errors.
+
