@@ -12,15 +12,8 @@ export function Footer() {
         <div className="col-span-1 md:col-span-2">
 
           {/* Logo */}
-          <div className="flex items-center gap-2.5 mb-4">
-            <img src="/logo-icon.png" alt="NorthSouth icon" className="h-9 w-9 object-contain" />
-            <span
-              className="text-2xl font-bold"
-              style={{ letterSpacing: "-0.04em" }}
-            >
-              <span className="text-white">North</span>
-              <span style={{ color: "#22D3EE" }}>South</span>
-            </span>
+          <div className="mb-4">
+            <img src="/logo-footer.png" alt="NorthSouth" className="h-10 object-contain" />
           </div>
 
           <p className="text-slate-400 max-w-sm mb-6">
