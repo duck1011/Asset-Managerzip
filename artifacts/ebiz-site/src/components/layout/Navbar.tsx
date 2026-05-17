@@ -46,7 +46,7 @@ export function Navbar() {
             className="text-2xl font-bold"
             style={{ letterSpacing: "-0.04em" }}
           >
-            <span className="text-slate-900">North</span>
+            <span className="text-white">North</span>
             <span style={{ color: "#06B6D4" }}>South</span>
           </span>
         </Link>

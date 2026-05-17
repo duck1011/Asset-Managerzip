@@ -34,14 +34,14 @@ export default function Home() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h1
-              className="text-5xl md:text-7xl font-bold mb-6"
+              className="text-5xl md:text-7xl font-bold mb-8"
               style={{ letterSpacing: "-0.04em" }}
               data-testid="text-hero-headline"
             >
               <span className="text-white">North</span>
               <span style={{ color: "#06B6D4" }}>South</span>
             </h1>
-            <p className="text-xl md:text-2xl font-light text-slate-300 mb-12" data-testid="text-hero-tagline">
+            <p className="text-xl md:text-2xl font-light text-slate-300 mb-10" data-testid="text-hero-tagline">
               {t.profile.tagline}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
