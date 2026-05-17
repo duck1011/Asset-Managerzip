@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X, Globe, LayoutDashboard } from "lucide-react";
 import { profile } from "@/data/mock";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/context/LanguageContext";
@@ -9,16 +9,33 @@ export function Navbar() {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const { lang, setLang, t } = useLanguage();
+  const [bookingCount, setBookingCount] = useState(0);
+
+  useEffect(() => {
+    const refresh = () => {
+      const stored = JSON.parse(localStorage.getItem("userBookings") || "[]");
+      setBookingCount(stored.length);
+    };
+    refresh();
+    window.addEventListener("storage", refresh);
+    // Re-check on route changes
+    const interval = setInterval(refresh, 1000);
+    return () => {
+      window.removeEventListener("storage", refresh);
+      clearInterval(interval);
+    };
+  }, []);
+
+  const otherLang = lang === "en" ? "id" : "en";
+  const langLabel = lang === "en" ? "ID" : "EN";
 
   const links = [
     { href: "/", label: t.nav.home },
     { href: "/profile", label: t.nav.about },
     { href: "/services", label: t.nav.services },
     { href: "/media", label: t.nav.media },
+    { href: "/consultation", label: t.nav.consultation },
   ];
-
-  const otherLang = lang === "en" ? "id" : "en";
-  const langLabel = lang === "en" ? "ID" : "EN";
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" data-testid="navbar">
@@ -31,7 +48,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-5">
           {links.map((link) => (
             <Link
               key={link.href}
@@ -45,6 +62,23 @@ export function Navbar() {
             </Link>
           ))}
 
+          {/* Dashboard Link */}
+          <Link
+            href="/dashboard"
+            className={`relative flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-primary ${
+              location === "/dashboard" ? "text-primary" : "text-muted-foreground"
+            }`}
+            data-testid="link-desktop-dashboard"
+          >
+            <LayoutDashboard className="w-4 h-4" />
+            {t.nav.dashboard}
+            {bookingCount > 0 && (
+              <span className="absolute -top-2 -right-3 bg-primary text-primary-foreground text-xs w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                {bookingCount}
+              </span>
+            )}
+          </Link>
+
           {/* Language Switcher */}
           <button
             onClick={() => setLang(otherLang)}
@@ -56,11 +90,23 @@ export function Navbar() {
             {langLabel}
           </button>
 
-          <Button data-testid="button-nav-contact">{t.nav.contact}</Button>
+          <Link href="/booking">
+            <Button data-testid="button-nav-contact">{t.nav.booking}</Button>
+          </Link>
         </div>
 
-        {/* Mobile Nav Toggle */}
+        {/* Mobile Row */}
         <div className="md:hidden flex items-center gap-2">
+          {/* Mobile Dashboard Badge */}
+          <Link href="/dashboard" className="relative p-2 text-muted-foreground" data-testid="link-mobile-dashboard-icon">
+            <LayoutDashboard className="w-5 h-5" />
+            {bookingCount > 0 && (
+              <span className="absolute top-0 right-0 bg-primary text-primary-foreground text-xs w-4 h-4 rounded-full flex items-center justify-center font-bold">
+                {bookingCount}
+              </span>
+            )}
+          </Link>
+
           {/* Mobile Language Switcher */}
           <button
             onClick={() => setLang(otherLang)}
@@ -98,9 +144,27 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <Button className="w-full mt-2" onClick={() => setIsOpen(false)} data-testid="button-mobile-contact">
-              {t.nav.contact}
-            </Button>
+            <Link
+              href="/dashboard"
+              className={`flex items-center gap-2 text-sm font-medium p-2 rounded transition-colors ${
+                location === "/dashboard" ? "bg-primary/10 text-primary" : "text-foreground hover:bg-muted"
+              }`}
+              onClick={() => setIsOpen(false)}
+              data-testid="link-mobile-dashboard"
+            >
+              <LayoutDashboard className="w-4 h-4" />
+              {t.nav.dashboard}
+              {bookingCount > 0 && (
+                <span className="bg-primary text-primary-foreground text-xs px-1.5 py-0.5 rounded-full font-bold ml-auto">
+                  {bookingCount}
+                </span>
+              )}
+            </Link>
+            <Link href="/booking" onClick={() => setIsOpen(false)}>
+              <Button className="w-full mt-2" data-testid="button-mobile-contact">
+                {t.nav.booking}
+              </Button>
+            </Link>
           </div>
         </div>
       )}

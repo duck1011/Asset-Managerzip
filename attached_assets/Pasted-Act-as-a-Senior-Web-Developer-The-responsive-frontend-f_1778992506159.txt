@@ -1,0 +1,51 @@
+Act as a Senior Web Developer. The responsive frontend for the e-business website is complete. Now, we need to make the UX feel 100% real by implementing a complete booking, consultation scheduling, and receipt generation flow.
+
+We are simulating the backend. We will use localStorage to persist bookings and setTimeout to simulate network latency so the UI feels like it's processing real transactions.
+
+STRICT RULES:
+
+NO REAL BACKEND OR EXTERNAL APIS. Use React state and localStorage for all data persistence.
+NO ERROR HANDLING. Assume all bookings and submissions succeed.
+Keep code beginner-friendly, modular, and clean.
+Use existing Tailwind CSS and Lucide React icons.
+NEW DEPENDENCIES TO INSTALL:
+
+react-hot-toast (for sleek success notifications)
+framer-motion (for smooth page transitions and success checkmarks)
+date-fns (for formatting dates on the receipt)
+FEATURE 1: MULTI-STEP BOOKING FLOW (app/booking/page.jsx)Transform the simple "Select Service" into a professional 3-step booking process:
+
+Step 1: Select Service. Show the services grid. Clicking one moves to Step 2.
+Step 2: Schedule & Details.
+Create a simple date picker (just an <input type="date">) and time slot grid (Morning/Afternoon/Evening buttons).
+Add simple Name, Email, and Phone inputs.
+Step 3: Confirm & Pay (Simulated).
+Show a summary of selected service, date, time, and user details.
+A big "Confirm & Pay" button.
+UX TRICK: When clicked, show a loading spinner on the button for 1.5 seconds (setTimeout) to simulate payment processing. Then, save the booking object to localStorage under the key 'userBookings', show a react-hot-toast success message, and redirect to the Receipt page.
+FEATURE 2: CONSULTATION SCHEDULING (app/consultation/page.jsx)
+
+A dedicated page for free consultations.
+A simple form: Name, Email, "What do you need help with?" (textarea), and a preferred date <input type="date">.
+On submit, simulate a 1-second delay, show a success toast, and clear the form.
+FEATURE 3: RECEIPT & DASHBOARD (app/dashboard/page.jsx)
+
+This is the user's personal dashboard.
+On load, read the 'userBookings' array from localStorage.
+If no bookings, show a friendly "No bookings yet" message with a link to services.
+If bookings exist, map through them and display clean "Receipt Cards".
+Receipt Card Data: Must include a generated Fake Booking ID (e.g., BK-${Date.now()}), Service Name, Date, Time, Price, and a "Paid" status badge with a green Lucide CheckCircle icon.
+Add a "Print Receipt" button that triggers window.print() (style the print layout cleanly using Tailwind's print: modifier).
+FEATURE 4: GLOBAL UX POLISH
+
+Navbar Update: Add a "My Dashboard" link to the navbar showing the number of active bookings.
+Animations: Use framer-motion to fade-in the success checkmark on the booking confirmation and fade-in the receipt cards on the dashboard.
+Simulated Latency: Any action that would normally hit a server (booking, consultation submit) MUST have a 1 to 1.5-second artificial delay with a loading state to feel real.
+EXECUTION INSTRUCTIONS:
+
+Install the required dependencies (npm install react-hot-toast framer-motion date-fns).
+Create the multi-step booking page.
+Create the consultation page.
+Create the dashboard/receipt page.
+Update the Navbar to include the Dashboard link and wrap the layout in the Toaster provider.
+Write clean, readable code. Let's make this feel like a million-dollar SaaS.
