@@ -1,0 +1,48 @@
+Act as a Senior Web Developer. We are building a fast, responsive, beginner-friendly e-business website. The goal is to keep the code simple, readable, and strictly satisfying the requirements without overcomplicating it.
+
+STRICT RULES:
+
+NO ERROR HANDLING. Do not write try/catch blocks. Do not write fallback UIs. Assume all data fetching and user inputs succeed perfectly.
+Use Next.js 14 (App Router) with Server Components for maximum speed.
+Use Tailwind CSS for all styling. Mobile-first responsive design.
+Use plain, simple React state (useState). No Redux, no Zustand, no complex state management.
+Keep components small, flat, and easy for a beginner to read. Use descriptive names.
+Use Lucide React for icons.
+TECH STACK:
+
+Next.js 14 (App Router)
+Tailwind CSS
+Lucide React (for icons)
+Mock JSON data (hardcoded in a data/ folder)
+DATA STRUCTURE (Create these in a data/mock.js file):
+
+profile: { companyName, tagline, mission, aboutText, brandColors: { primary, secondary } }
+services: Array of { id, title, description, price, icon }
+mediaGallery: Array of { id, src (use placeholder images via picsum.photos), alt, category }
+WEBSITE STRUCTURE & PAGES:
+
+Layout (app/layout.jsx):
+Clean <html> and <body> tags.
+Import Tailwind globals.
+Include a sticky, responsive <Navbar> with a mobile hamburger menu and a <Footer>.
+Home Page (app/page.jsx):
+Hero Section: Big headline from profile.companyName, subheadline from profile.tagline, and a CTA button.
+Services Preview: Grid of the first 3 services from mock data.
+Media Preview: A small grid of 4 images from mediaGallery.
+Profile Page (app/profile/page.jsx):
+Display the profile.aboutText and profile.mission cleanly using Tailwind typography.
+Services Page (app/services/page.jsx):
+A responsive grid (1 col mobile, 2 cols tablet, 3 cols desktop) displaying all services.
+Each service card shows the icon, title, description, and price.
+A simple "Select Service" button that changes color when clicked (basic UI state).
+Media Studio Page (app/media/page.jsx):
+A simple web-based media dashboard.
+Top section: A form with an "Image URL" input and a "Category" input. An "Add to Gallery" button that adds the new image object to the React state array and displays it instantly. (NO validation, NO error handling).
+Bottom section: A responsive masonry-style grid displaying the mediaGallery state.
+EXECUTION INSTRUCTIONS:
+
+Initialize the Next.js project structure in your head.
+Create the data/mock.js file first.
+Build the reusable UI components (Navbar, Footer, ServiceCard, MediaCard) in a components/ folder.
+Build the pages in the app/ directory following the App Router conventions.
+Write clean, self-documenting code. Let's go.
