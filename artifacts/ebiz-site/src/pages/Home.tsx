@@ -4,8 +4,17 @@ import { ServiceCard } from "@/components/ServiceCard";
 import { MediaCard } from "@/components/MediaCard";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Home() {
+  const { t } = useLanguage();
+
+  const localizedServices = services.map((service, i) => ({
+    ...service,
+    title: t.serviceData[i]?.title ?? service.title,
+    description: t.serviceData[i]?.description ?? service.description,
+  }));
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -16,25 +25,24 @@ export default function Home() {
               {profile.companyName}
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8" data-testid="text-hero-tagline">
-              {profile.tagline}
+              {t.profile.tagline}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/services">
                 <Button size="lg" className="w-full sm:w-auto text-lg px-8" data-testid="button-hero-cta">
-                  Our Services
+                  {t.home.heroCta}
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
               <Link href="/profile">
                 <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-8" data-testid="button-hero-secondary">
-                  Learn About Us
+                  {t.home.heroSecondary}
                 </Button>
               </Link>
             </div>
           </div>
         </div>
-        
-        {/* Decorative background elements */}
+
         <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-secondary/10 rounded-full blur-3xl pointer-events-none" />
       </section>
@@ -43,15 +51,15 @@ export default function Home() {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Core Capabilities</h2>
+            <h2 className="text-3xl font-bold mb-4">{t.home.capabilitiesTitle}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Enterprise-grade digital strategy and execution tailored for growing businesses.
+              {t.home.capabilitiesDesc}
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.slice(0, 3).map((service) => (
-              <ServiceCard 
+            {localizedServices.slice(0, 3).map((service) => (
+              <ServiceCard
                 key={service.id}
                 id={service.id}
                 title={service.title}
@@ -61,11 +69,11 @@ export default function Home() {
               />
             ))}
           </div>
-          
+
           <div className="mt-12 text-center">
             <Link href="/services">
               <Button variant="outline" data-testid="button-view-all-services">
-                View All Services
+                {t.home.viewAllServices}
               </Button>
             </Link>
           </div>
@@ -76,15 +84,15 @@ export default function Home() {
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Recent Work</h2>
+            <h2 className="text-3xl font-bold mb-4">{t.home.recentWorkTitle}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              A selection of our latest projects driving measurable growth for clients.
+              {t.home.recentWorkDesc}
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {mediaGallery.slice(0, 4).map((item) => (
-              <MediaCard 
+              <MediaCard
                 key={item.id}
                 id={item.id}
                 src={item.src}
@@ -93,11 +101,11 @@ export default function Home() {
               />
             ))}
           </div>
-          
+
           <div className="mt-12 text-center">
             <Link href="/media">
               <Button variant="outline" data-testid="button-view-media-studio">
-                Explore Media Studio
+                {t.home.exploreMedia}
               </Button>
             </Link>
           </div>

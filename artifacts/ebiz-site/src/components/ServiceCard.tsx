@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import * as Icons from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface ServiceCardProps {
   id: number;
@@ -13,6 +14,7 @@ interface ServiceCardProps {
 
 export function ServiceCard({ id, title, description, price, iconName }: ServiceCardProps) {
   const [selected, setSelected] = useState(false);
+  const { t } = useLanguage();
   const Icon = (Icons as any)[iconName] || Icons.HelpCircle;
 
   return (
@@ -28,13 +30,13 @@ export function ServiceCard({ id, title, description, price, iconName }: Service
         <div className="text-2xl font-bold text-foreground" data-testid={`text-price-${id}`}>{price}</div>
       </CardContent>
       <CardFooter>
-        <Button 
+        <Button
           variant={selected ? "default" : "outline"}
           className="w-full"
           onClick={() => setSelected(!selected)}
           data-testid={`button-select-service-${id}`}
         >
-          {selected ? "Selected" : "Select Service"}
+          {selected ? t.serviceCard.selected : t.serviceCard.select}
         </Button>
       </CardFooter>
     </Card>
