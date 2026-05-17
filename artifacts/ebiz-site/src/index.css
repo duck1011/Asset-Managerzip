@@ -202,15 +202,3 @@
   }
 }
 
-/* Isolated single-receipt print — hides everything except #print-area */
-@media print {
-  body > * {
-    display: none !important;
-  }
-  #print-area {
-    display: block !important;
-    position: static !important;
-    left: auto !important;
-    top: auto !important;
-  }
-}

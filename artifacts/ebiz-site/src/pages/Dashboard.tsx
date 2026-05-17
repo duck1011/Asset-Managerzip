@@ -81,59 +81,114 @@ export default function Dashboard() {
   };
 
   const handlePrint = (item: DashboardItem) => {
-    const printArea = document.getElementById("print-area");
-    if (!printArea) return;
-
     const isBooking = item._kind === "booking";
     const b = isBooking ? (item as BookingItem & { _kind: "booking" }) : null;
     const c = !isBooking ? (item as ConsultationItem & { _kind: "consultation" }) : null;
 
-    printArea.innerHTML = `
-      <div style="font-family:'Space Grotesk',sans-serif;max-width:600px;margin:40px auto;padding:40px;background:#fff;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid #e2e8f0;">
-          <div>
-            <p style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.12em;margin:0 0 4px;">Receipt</p>
-            <p style="font-family:monospace;font-weight:700;font-size:18px;color:#0f172a;margin:0;">${item.id}</p>
-          </div>
-          <div style="font-size:28px;font-weight:700;letter-spacing:-0.04em;">
-            <span style="color:#0f172a;">North</span><span style="color:#06b6d4;">South</span>
-          </div>
-        </div>
-        ${isBooking && b ? `
-        <table style="width:100%;border-collapse:collapse;">
-          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;width:40%;">Service</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${b.service.localizedTitle || b.service.title}</td></tr>
-          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;">Date</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${formatDate(b.date)}</td></tr>
-          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;">Time</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${timeLabel(b.timeSlot)}</td></tr>
-          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;">Name</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${b.name}</td></tr>
-          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;">Email</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${b.email}</td></tr>
-          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;">Phone</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${b.phone}</td></tr>
-          <tr><td style="padding:20px 0;font-size:18px;font-weight:700;color:#0f172a;">Total</td><td style="padding:20px 0;font-size:28px;font-weight:700;color:#06b6d4;text-align:right;">${b.service.price}</td></tr>
-        </table>
-        <div style="margin-top:12px;padding:14px 20px;background:#ecfdf5;border-radius:10px;display:flex;align-items:center;gap:10px;">
-          <span style="color:#16a34a;font-size:20px;">✓</span>
-          <span style="color:#15803d;font-weight:600;font-size:14px;">Payment ${b.status === 'pay_later' ? 'Pending' : 'Confirmed'}</span>
-        </div>
-        ` : `
-        <table style="width:100%;border-collapse:collapse;">
-          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;width:40%;">Name</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${c!.name}</td></tr>
-          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;">Email</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${c!.email}</td></tr>
-          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;">Preferred Date</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${formatDate(c!.date)}</td></tr>
-          <tr><td colspan="2" style="padding:14px 0;color:#64748b;font-size:14px;">What you need help with</td></tr>
-          <tr><td colspan="2" style="padding:4px 0 20px;color:#334155;font-size:14px;line-height:1.6;">${c!.need}</td></tr>
-        </table>
-        <div style="margin-top:12px;padding:14px 20px;background:#eff6ff;border-radius:10px;">
-          <p style="color:#1d4ed8;font-weight:600;font-size:14px;margin:0;">Free Consultation — No Charge</p>
-          <p style="color:#3b82f6;font-size:13px;margin:4px 0 0;">We'll reach out within 24 hours to confirm your session.</p>
-        </div>
-        `}
-        <div style="margin-top:40px;padding-top:20px;border-top:1px solid #e2e8f0;text-align:center;color:#94a3b8;font-size:12px;">
-          NorthSouth &bull; hello@northsouth.agency &bull; +1 (555) 123-4567
-        </div>
+    const bodyHtml = isBooking && b ? `
+      <table style="width:100%;border-collapse:collapse;">
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:14px 0;color:#64748b;font-size:14px;width:40%;">Service</td>
+          <td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${b.service.localizedTitle || b.service.title}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:14px 0;color:#64748b;font-size:14px;">Date</td>
+          <td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${formatDate(b.date)}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:14px 0;color:#64748b;font-size:14px;">Time</td>
+          <td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${timeLabel(b.timeSlot)}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:14px 0;color:#64748b;font-size:14px;">Name</td>
+          <td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${b.name}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:14px 0;color:#64748b;font-size:14px;">Email</td>
+          <td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${b.email}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:14px 0;color:#64748b;font-size:14px;">Phone</td>
+          <td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${b.phone}</td>
+        </tr>
+        <tr>
+          <td style="padding:20px 0;font-size:18px;font-weight:700;color:#0f172a;">Total</td>
+          <td style="padding:20px 0;font-size:28px;font-weight:700;color:#06b6d4;text-align:right;">${b.service.price}</td>
+        </tr>
+      </table>
+      <div style="margin-top:16px;padding:14px 20px;background:#ecfdf5;border-radius:10px;display:flex;align-items:center;gap:10px;">
+        <span style="color:#16a34a;font-size:20px;">&#10003;</span>
+        <span style="color:#15803d;font-weight:600;font-size:14px;">Payment ${b.status === "pay_later" ? "Pending" : "Confirmed"}</span>
+      </div>
+    ` : `
+      <table style="width:100%;border-collapse:collapse;">
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:14px 0;color:#64748b;font-size:14px;width:40%;">Name</td>
+          <td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${c!.name}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:14px 0;color:#64748b;font-size:14px;">Email</td>
+          <td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${c!.email}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:14px 0;color:#64748b;font-size:14px;">Preferred Date</td>
+          <td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${formatDate(c!.date)}</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding:14px 0;color:#64748b;font-size:14px;">What you need help with</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding:4px 0 20px;color:#334155;font-size:14px;line-height:1.6;">${c!.need}</td>
+        </tr>
+      </table>
+      <div style="margin-top:16px;padding:14px 20px;background:#eff6ff;border-radius:10px;">
+        <p style="color:#1d4ed8;font-weight:600;font-size:14px;margin:0;">Free Consultation &mdash; No Charge</p>
+        <p style="color:#3b82f6;font-size:13px;margin:6px 0 0;">We&rsquo;ll reach out within 24 hours to confirm your session.</p>
       </div>
     `;
 
-    window.print();
-    setTimeout(() => { printArea.innerHTML = ""; }, 1000);
+    const fullHtml = `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Receipt ${item.id} — NorthSouth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: 'Space Grotesk', sans-serif; background: #fff; color: #0f172a; }
+      @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+    </style>
+  </head>
+  <body>
+    <div style="max-width:600px;margin:40px auto;padding:40px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid #e2e8f0;">
+        <div>
+          <p style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.12em;margin:0 0 4px;">Receipt</p>
+          <p style="font-family:monospace;font-weight:700;font-size:18px;color:#0f172a;margin:0;">${item.id}</p>
+        </div>
+        <div style="font-size:28px;font-weight:700;letter-spacing:-0.04em;">
+          <span style="color:#0f172a;">North</span><span style="color:#06b6d4;">South</span>
+        </div>
+      </div>
+      ${bodyHtml}
+      <div style="margin-top:40px;padding-top:20px;border-top:1px solid #e2e8f0;text-align:center;color:#94a3b8;font-size:12px;">
+        NorthSouth &bull; hello@northsouth.agency &bull; +1 (555) 123-4567
+      </div>
+    </div>
+    <script>
+      window.onload = function() { window.print(); window.close(); };
+    </script>
+  </body>
+</html>`;
+
+    const printWindow = window.open("", "_blank", "width=700,height=900");
+    if (!printWindow) {
+      toast.error("Please allow pop-ups to print receipts.");
+      return;
+    }
+    printWindow.document.write(fullHtml);
+    printWindow.document.close();
   };
 
   const bookings = items.filter((i) => i._kind === "booking") as (BookingItem & { _kind: "booking" })[];
@@ -145,9 +200,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-background py-16 print:py-4">
-      {/* Hidden print target */}
-      <div id="print-area" className="absolute left-[-9999px] top-0" />
+    <div className="min-h-screen bg-background py-16">
 
       <div className="container mx-auto px-4 max-w-4xl">
         {/* Header */}
