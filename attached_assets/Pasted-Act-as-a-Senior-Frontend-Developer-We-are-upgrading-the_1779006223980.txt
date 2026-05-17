@@ -1,0 +1,39 @@
+Act as a Senior Frontend Developer. We are upgrading the Navbar and Hero section to achieve a premium, modern SaaS aesthetic using Glassmorphism and Framer Motion animations.
+
+TECH STACK: React + Vite, Tailwind CSS, Framer Motion. BRAND COLORS: Midnight Slate (slate-900), Electric Cyan (cyan-500).
+
+EXECUTE THE FOLLOWING TASKS:
+
+TASK 1: Glassmorphism Navbar (components/Navbar.jsx)
+
+Layout Fix: Make the Navbar fixed top-0 w-full z-50.
+Glass Effect: Apply the following Tailwind classes to the navbar container: bg-slate-900/40 backdrop-blur-xl border-b border-white/10.
+Note: The bg-slate-900/40 (40% opacity) combined with backdrop-blur-xl creates the premium frosted glass look against the dark hero.
+Scroll State (Crucial for UX): Add a scroll event listener (window.addEventListener('scroll', ...)).
+When scrollY < 50, the navbar remains transparent glass (bg-slate-900/40).
+When scrollY >= 50, transition the background to a denser glass (bg-slate-900/80 shadow-lg) to ensure readability as the user scrolls past the hero. Use transition-all duration-300 for a smooth shift.
+Hero Spacing: Because the Navbar is now fixed, ensure the Hero section or the main layout has appropriate top padding (pt-20 or similar) so content isn't hidden behind the nav.
+TASK 2: Moving Motion Hero Background (app/pages/Hero.jsx or equivalent)
+
+Container Setup: The Hero container must be relative overflow-hidden bg-slate-900 to trap the moving elements inside.
+Animated Blobs: Create 3 large <motion.div> elements inside the Hero container, positioned absolutely behind the text content (z-0). The text/buttons must be relative z-10.
+Blob Styling:
+Each blob should be a large circle (w-[500px] h-[500px] rounded-full) with a heavy blur filter (blur-[120px]).
+Blob 1: bg-cyan-500/30 (Center-Left)
+Blob 2: bg-indigo-600/20 (Center-Right)
+Blob 3: bg-cyan-400/20 (Top-Center)
+Framer Motion Animation: Use the animate prop on each blob to make them slowly float and scale.
+Example for Blob 1:
+<motion.div   className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-cyan-500/30 rounded-full blur-[120px]"  animate={{    x: [0, 50, -30, 0],    y: [0, -40, 20, 0],    scale: [1, 1.1, 0.9, 1],  }}  transition={{    duration: 20,    ease: "easeInOut",    repeat: Infinity,    repeatType: "loop",  }}/>
+Vary the x, y, scale keyframes, duration (e.g., 15, 20, 25), and initial starting positions for all 3 blobs so they move independently, creating a fluid, organic, breathing background.
+Remove Old Content: Delete the old Earth image or static gradients previously used in the Hero.
+TASK 3: Text & Button Polish for Dark Motion Background
+
+With the moving dark mesh, ensure contrast remains high:
+"North" -> text-white
+"South" -> text-cyan-400
+Tagline -> text-slate-300
+Primary Button -> bg-cyan-500 text-slate-900 shadow-lg shadow-cyan-500/25 hover:bg-cyan-400
+Secondary Button -> border border-white/20 text-white hover:bg-white/10
+Ensure there are no hydration or z-index conflicts between the fixed glass navbar and the hero section.
+

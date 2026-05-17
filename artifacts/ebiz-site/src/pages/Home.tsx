@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { motion } from "framer-motion";
 import { profile, services, mediaGallery } from "@/data/mock";
 import { ServiceCard } from "@/components/ServiceCard";
 import { MediaCard } from "@/components/MediaCard";
@@ -17,17 +18,25 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Hero Section — Cosmic Mesh */}
+      {/* Hero Section — Cosmic Mesh with Motion Blobs */}
       <section className="relative bg-slate-900 py-24 lg:py-40 overflow-hidden">
-        {/* Blob 1 — Cyan Core */}
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500 rounded-full blur-[120px] opacity-30 pointer-events-none"
-          style={{ animation: "pulse 10s cubic-bezier(0.4, 0, 0.6, 1) infinite" }}
+        {/* Blob 1 — Cyan Core (center-left, slow float) */}
+        <motion.div
+          className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-cyan-500/30 rounded-full blur-[120px] pointer-events-none"
+          animate={{ x: [0, 50, -30, 0], y: [0, -40, 20, 0], scale: [1, 1.1, 0.9, 1] }}
+          transition={{ duration: 20, ease: "easeInOut", repeat: Infinity, repeatType: "loop" }}
         />
-        {/* Blob 2 — Deep Blue Accent */}
-        <div
-          className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-indigo-600 rounded-full blur-[100px] opacity-20 pointer-events-none"
-          style={{ animation: "pulse 10s cubic-bezier(0.4, 0, 0.6, 1) infinite" }}
+        {/* Blob 2 — Indigo Accent (center-right) */}
+        <motion.div
+          className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none"
+          animate={{ x: [0, -60, 40, 0], y: [0, 30, -50, 0], scale: [1, 0.9, 1.15, 1] }}
+          transition={{ duration: 25, ease: "easeInOut", repeat: Infinity, repeatType: "loop" }}
+        />
+        {/* Blob 3 — Cyan Highlight (top-center) */}
+        <motion.div
+          className="absolute -top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-cyan-400/20 rounded-full blur-[120px] pointer-events-none"
+          animate={{ x: [0, 30, -20, 0], y: [0, 60, 20, 0], scale: [1, 1.05, 0.95, 1] }}
+          transition={{ duration: 15, ease: "easeInOut", repeat: Infinity, repeatType: "loop" }}
         />
 
         <div className="container mx-auto px-4 relative z-10">
@@ -46,7 +55,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/services">
                 <button
-                  className="inline-flex items-center gap-2 bg-cyan-500 text-slate-900 font-semibold px-8 py-3 rounded-full hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/20 text-lg"
+                  className="inline-flex items-center gap-2 bg-cyan-500 text-slate-900 font-semibold px-8 py-3 rounded-full hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/25 text-lg"
                   data-testid="button-hero-cta"
                 >
                   {t.home.heroCta}
@@ -55,7 +64,7 @@ export default function Home() {
               </Link>
               <Link href="/profile">
                 <button
-                  className="inline-flex items-center border border-slate-500 text-slate-300 px-8 py-3 rounded-full hover:border-white hover:text-white transition-all text-lg"
+                  className="inline-flex items-center border border-white/20 text-white px-8 py-3 rounded-full hover:bg-white/10 transition-all text-lg"
                   data-testid="button-hero-secondary"
                 >
                   {t.home.heroSecondary}
