@@ -36,7 +36,7 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" data-testid="navbar">
+    <nav className="sticky top-0 z-50 w-full border-b border-white/5 bg-slate-900/80 backdrop-blur-md" data-testid="navbar">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
 
         {/* Logo */}
@@ -57,8 +57,8 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                location === link.href ? "text-primary" : "text-muted-foreground"
+              className={`text-sm font-medium transition-colors hover:text-cyan-400 ${
+                location === link.href ? "text-cyan-400" : "text-slate-300"
               }`}
               data-testid={`link-desktop-${link.href === "/" ? "home" : link.href.slice(1)}`}
             >
@@ -69,8 +69,8 @@ export function Navbar() {
           {/* Dashboard Link */}
           <Link
             href="/dashboard"
-            className={`relative flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-primary ${
-              location === "/dashboard" ? "text-primary" : "text-muted-foreground"
+            className={`relative flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-cyan-400 ${
+              location === "/dashboard" ? "text-cyan-400" : "text-slate-300"
             }`}
             data-testid="link-desktop-dashboard"
           >
@@ -86,7 +86,7 @@ export function Navbar() {
           {/* Language Switcher */}
           <button
             onClick={() => setLang(otherLang)}
-            className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-primary transition-colors border border-border rounded-md px-2.5 py-1"
+            className="flex items-center gap-1.5 text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors border border-white/20 rounded-md px-2.5 py-1"
             data-testid="button-lang-switch"
             title={lang === "en" ? "Switch to Bahasa Indonesia" : "Switch to English"}
           >

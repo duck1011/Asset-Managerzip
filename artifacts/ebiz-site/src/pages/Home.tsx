@@ -26,30 +26,41 @@ export default function Home() {
           backgroundPosition: "center",
         }}
       >
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-slate-900/70" />
-        {/* Cyan tint glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl pointer-events-none" style={{ background: "radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 70%)" }} />
+        {/* Gradient scrim — dark at bottom, fades up */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/70 to-transparent" />
+        {/* Subtle cyan glow centre */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full blur-3xl pointer-events-none" style={{ background: "radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%)" }} />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-6" data-testid="text-hero-headline">
-              {profile.companyName}
+            <h1
+              className="text-5xl md:text-7xl font-bold mb-6"
+              style={{ letterSpacing: "-0.04em" }}
+              data-testid="text-hero-headline"
+            >
+              <span className="text-white">North</span>
+              <span style={{ color: "#06B6D4" }}>South</span>
             </h1>
-            <p className="text-xl md:text-2xl text-slate-300 mb-10" data-testid="text-hero-tagline">
+            <p className="text-xl md:text-2xl font-light text-slate-300 mb-12" data-testid="text-hero-tagline">
               {t.profile.tagline}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/services">
-                <Button size="lg" className="w-full sm:w-auto text-lg px-8" data-testid="button-hero-cta">
+                <button
+                  className="inline-flex items-center gap-2 bg-cyan-500 text-slate-900 font-semibold px-8 py-3 rounded-full hover:bg-cyan-400 transition-colors text-lg"
+                  data-testid="button-hero-cta"
+                >
                   {t.home.heroCta}
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
+                  <ArrowRight className="w-5 h-5" />
+                </button>
               </Link>
               <Link href="/profile">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-8 text-white border-white/40 hover:bg-white/10 hover:text-white" data-testid="button-hero-secondary">
+                <button
+                  className="inline-flex items-center bg-white/10 text-white border border-white/30 backdrop-blur-sm px-8 py-3 rounded-full hover:bg-white/20 transition-colors text-lg"
+                  data-testid="button-hero-secondary"
+                >
                   {t.home.heroSecondary}
-                </Button>
+                </button>
               </Link>
             </div>
           </div>
