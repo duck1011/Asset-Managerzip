@@ -18,13 +18,25 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32 bg-primary/5 overflow-hidden">
+      <section
+        className="relative py-24 lg:py-40 overflow-hidden"
+        style={{
+          backgroundImage: "url('/hero-bg.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-slate-900/70" />
+        {/* Cyan tint glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl pointer-events-none" style={{ background: "radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 70%)" }} />
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground mb-6" data-testid="text-hero-headline">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-6" data-testid="text-hero-headline">
               {profile.companyName}
             </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-8" data-testid="text-hero-tagline">
+            <p className="text-xl md:text-2xl text-slate-300 mb-10" data-testid="text-hero-tagline">
               {t.profile.tagline}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -35,16 +47,13 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href="/profile">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-8" data-testid="button-hero-secondary">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-8 text-white border-white/40 hover:bg-white/10 hover:text-white" data-testid="button-hero-secondary">
                   {t.home.heroSecondary}
                 </Button>
               </Link>
             </div>
           </div>
         </div>
-
-        <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-secondary/10 rounded-full blur-3xl pointer-events-none" />
       </section>
 
       {/* Featured Services */}
