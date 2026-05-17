@@ -1,0 +1,56 @@
+Act as a Senior UI/UX Designer and Frontend Developer. We are entering the final polish phase of the NorthSouth e-business platform.
+
+TECH STACK CONTEXT: We are using React + Vite, Tailwind CSS, React Router DOM, Framer Motion, and Lucide React. DO NOT use Next.js specific code (no next/font, no next/navigation, no Server Components).
+
+STRICT DESIGN SYSTEM (MANDATORY):
+
+Backgrounds: Page bg #F8FAFC (slate-50), Card bg #FFFFFF, Dark sections #0F172A (slate-900).
+Accents: Primary Cyan #06B6D4 (cyan-500), Hover Cyan #22D3EE (cyan-400).
+Text: Headings #0F172A (slate-900), Body #334155 (slate-700), Muted #64748B (slate-500).
+Typography: Headings/Logo: Space Grotesk (bold/tight tracking). Body: Inter (regular). Load these via standard CSS @import in index.css.
+UI Elements: Border radius must be consistent: rounded-xl for cards, rounded-full for buttons/inputs. Subtle shadows: shadow-sm for cards, shadow-lg on hover. Use transition-all duration-300 on all interactive elements.
+EXECUTE THE FOLLOWING 4 TASKS:
+
+TASK 1: UI/UX Premium Polish
+
+Audit all pages (Home, Services, Booking, Consultation, Media, Dashboard). Apply the Design System strictly.
+Add consistent vertical rhythm: Sections must have py-24 or py-32 spacing. Inner grids must have gap-8.
+Dashboard Cards: Add a subtle left-border color indicator (e.g., Cyan for Paid, Yellow for Pay Later, Blue for Consultation).
+Hover States: All clickable cards must have hover:shadow-lg hover:-translate-y-1 transition-all duration-300.
+Inputs: Ensure all inputs have a consistent style: border-slate-200 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100 rounded-xl px-4 py-3 transition-all.
+Navigation: Use react-router-dom's useNavigate for programmatic routing and <Link> for declarative routing.
+TASK 2: Bilingual Chatbot (English & Indonesian) & Reset Logic
+
+Update the Chatbot component.
+Language Toggle: Add two small icon buttons at the top of the chat header (🇬🇧 EN / 🇮🇩 ID). Default to EN.
+State Logic: Create a lang state. Create a translations object containing all bot messages and quick replies in both English and Indonesian.
+EN Example: "Hi! How can I help you today?" / "Book a Service" / "Free Consultation"
+ID Example: "Hai! Ada yang bisa saya bantu hari ini?" / "Pesan Layanan" / "Konsultasi Gratis"
+When the user toggles the language, update the initial greeting and quick reply buttons instantly.
+Reset on Close: When the user clicks the 'X' to close the chatbot, the component must reset its state: clear the messages array, reset the lang to EN, and set isOpen to false. Every time the chat is opened, it must be a fresh conversation.
+TASK 3: Isolated Single Receipt Printing (CRITICAL FIX)
+
+Issue: window.print() currently prints all receipts on the dashboard or the whole page.
+Fix: We must isolate the print area.
+In the Dashboard component, add a hidden container specifically for printing: <div id="print-area" className="absolute left-[-9999px] top-0"></div>.
+Create a handlePrint(receiptId) function:
+Find the specific receipt data by ID.
+Generate a clean, formatted HTML string for just that one receipt (white background, black text, NorthSouth logo, receipt details).
+Inject that HTML string into the #print-area div.
+Apply Tailwind's print: utility classes globally if needed, or simply trigger window.print().
+After the print dialog is closed, clear the innerHTML of #print-area.
+This ensures only one receipt prints at a time, perfectly formatted.
+TASK 4: GitHub Repository Preparation
+
+Remove Bloat: Delete any unused boilerplate files, dummy data, or console.log() statements.
+Environment Variables: Create a .env.example file outlining any keys used. Ensure .env.local is ignored.
+.gitignore: Ensure node_modules, dist, .env.local, and OS files (.DS_Store) are in the Vite-provided .gitignore.
+README.md: Generate a professional README.md including:
+Project Title: NorthSouth E-Business Platform
+Description: A modern e-business platform for services, media management, and consultations.
+Tech Stack: React, Vite, Tailwind CSS, Framer Motion, React Router DOM, Lucide React.
+Brand Guidelines: List the exact Hex codes and Font families defined in Task 1.
+Getting Started: npm install, npm run dev.
+Folder Structure: Briefly explain the src/ structure (pages, components, etc.).
+Execute these with meticulous attention to visual detail and React + Vite best practices.
+

@@ -48,9 +48,7 @@ export default function Dashboard() {
     setItems(combined);
   };
 
-  useEffect(() => {
-    loadItems();
-  }, []);
+  useEffect(() => { loadItems(); }, []);
 
   const timeLabel = (slot: string) => {
     if (slot === "morning") return t.booking.morning;
@@ -65,8 +63,7 @@ export default function Dashboard() {
 
   const handlePayNow = (id: string) => {
     const bookings: BookingItem[] = JSON.parse(localStorage.getItem("userBookings") || "[]");
-    const updated = bookings.map((b) => b.id === id ? { ...b, status: "paid" as const } : b);
-    localStorage.setItem("userBookings", JSON.stringify(updated));
+    localStorage.setItem("userBookings", JSON.stringify(bookings.map((b) => b.id === id ? { ...b, status: "paid" } : b)));
     toast.success("Payment confirmed!");
     loadItems();
   };
@@ -83,10 +80,75 @@ export default function Dashboard() {
     loadItems();
   };
 
+  const handlePrint = (item: DashboardItem) => {
+    const printArea = document.getElementById("print-area");
+    if (!printArea) return;
+
+    const isBooking = item._kind === "booking";
+    const b = isBooking ? (item as BookingItem & { _kind: "booking" }) : null;
+    const c = !isBooking ? (item as ConsultationItem & { _kind: "consultation" }) : null;
+
+    printArea.innerHTML = `
+      <div style="font-family:'Space Grotesk',sans-serif;max-width:600px;margin:40px auto;padding:40px;background:#fff;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid #e2e8f0;">
+          <div>
+            <p style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.12em;margin:0 0 4px;">Receipt</p>
+            <p style="font-family:monospace;font-weight:700;font-size:18px;color:#0f172a;margin:0;">${item.id}</p>
+          </div>
+          <div style="font-size:28px;font-weight:700;letter-spacing:-0.04em;">
+            <span style="color:#0f172a;">North</span><span style="color:#06b6d4;">South</span>
+          </div>
+        </div>
+        ${isBooking && b ? `
+        <table style="width:100%;border-collapse:collapse;">
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;width:40%;">Service</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${b.service.localizedTitle || b.service.title}</td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;">Date</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${formatDate(b.date)}</td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;">Time</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${timeLabel(b.timeSlot)}</td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;">Name</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${b.name}</td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;">Email</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${b.email}</td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;">Phone</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${b.phone}</td></tr>
+          <tr><td style="padding:20px 0;font-size:18px;font-weight:700;color:#0f172a;">Total</td><td style="padding:20px 0;font-size:28px;font-weight:700;color:#06b6d4;text-align:right;">${b.service.price}</td></tr>
+        </table>
+        <div style="margin-top:12px;padding:14px 20px;background:#ecfdf5;border-radius:10px;display:flex;align-items:center;gap:10px;">
+          <span style="color:#16a34a;font-size:20px;">✓</span>
+          <span style="color:#15803d;font-weight:600;font-size:14px;">Payment ${b.status === 'pay_later' ? 'Pending' : 'Confirmed'}</span>
+        </div>
+        ` : `
+        <table style="width:100%;border-collapse:collapse;">
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;width:40%;">Name</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${c!.name}</td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;">Email</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${c!.email}</td></tr>
+          <tr style="border-bottom:1px solid #f1f5f9;"><td style="padding:14px 0;color:#64748b;font-size:14px;">Preferred Date</td><td style="padding:14px 0;font-weight:600;color:#0f172a;text-align:right;">${formatDate(c!.date)}</td></tr>
+          <tr><td colspan="2" style="padding:14px 0;color:#64748b;font-size:14px;">What you need help with</td></tr>
+          <tr><td colspan="2" style="padding:4px 0 20px;color:#334155;font-size:14px;line-height:1.6;">${c!.need}</td></tr>
+        </table>
+        <div style="margin-top:12px;padding:14px 20px;background:#eff6ff;border-radius:10px;">
+          <p style="color:#1d4ed8;font-weight:600;font-size:14px;margin:0;">Free Consultation — No Charge</p>
+          <p style="color:#3b82f6;font-size:13px;margin:4px 0 0;">We'll reach out within 24 hours to confirm your session.</p>
+        </div>
+        `}
+        <div style="margin-top:40px;padding-top:20px;border-top:1px solid #e2e8f0;text-align:center;color:#94a3b8;font-size:12px;">
+          NorthSouth &bull; hello@northsouth.agency &bull; +1 (555) 123-4567
+        </div>
+      </div>
+    `;
+
+    window.print();
+    setTimeout(() => { printArea.innerHTML = ""; }, 1000);
+  };
+
   const bookings = items.filter((i) => i._kind === "booking") as (BookingItem & { _kind: "booking" })[];
+
+  const borderColor = (item: DashboardItem) => {
+    if (item._kind === "consultation") return "border-l-blue-500";
+    const b = item as BookingItem & { _kind: "booking" };
+    return b.status === "pay_later" ? "border-l-yellow-400" : "border-l-cyan-500";
+  };
 
   return (
     <div className="min-h-screen bg-background py-16 print:py-4">
+      {/* Hidden print target */}
+      <div id="print-area" className="absolute left-[-9999px] top-0" />
+
       <div className="container mx-auto px-4 max-w-4xl">
         {/* Header */}
         <div className="mb-12 print:mb-6">
@@ -135,7 +197,7 @@ export default function Dashboard() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: i * 0.08 }}
-                className="bg-card border rounded-xl overflow-hidden print:border print:shadow-none print:mb-8 print:break-inside-avoid"
+                className={`bg-card border border-l-4 ${borderColor(item)} rounded-xl overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 print:border print:shadow-none print:mb-8 print:break-inside-avoid`}
                 data-testid={`receipt-card-${item.id}`}
               >
                 {/* Card Header */}
@@ -146,21 +208,19 @@ export default function Dashboard() {
                   </div>
 
                   {item._kind === "booking" ? (
-                    <div className="flex items-center gap-2">
-                      {(item.status === "pay_later") ? (
-                        <span className="flex items-center gap-1.5 bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 px-3 py-1.5 rounded-full text-sm font-semibold">
-                          <Clock className="w-4 h-4" />
-                          {t.dashboard.statusPayLater}
-                        </span>
-                      ) : (
-                        <span className="flex items-center gap-1.5 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-3 py-1.5 rounded-full text-sm font-semibold">
-                          <CheckCircle className="w-4 h-4" />
-                          {t.dashboard.statusPaid}
-                        </span>
-                      )}
-                    </div>
+                    (item.status === "pay_later") ? (
+                      <span className="flex items-center gap-1.5 bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 px-3 py-1.5 rounded-full text-sm font-semibold">
+                        <Clock className="w-4 h-4" />
+                        {t.dashboard.statusPayLater}
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1.5 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-3 py-1.5 rounded-full text-sm font-semibold">
+                        <CheckCircle className="w-4 h-4" />
+                        {t.dashboard.statusPaid}
+                      </span>
+                    )
                   ) : (
-                    <span className="flex items-center gap-1.5 bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400 px-3 py-1.5 rounded-full text-sm font-semibold">
+                    <span className="flex items-center gap-1.5 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 px-3 py-1.5 rounded-full text-sm font-semibold">
                       <MessageSquare className="w-4 h-4" />
                       {t.dashboard.badgeConsultation}
                     </span>
@@ -229,35 +289,30 @@ export default function Dashboard() {
 
                 {/* Card Footer */}
                 <div className="px-6 pb-5 flex flex-wrap items-center gap-3 print:hidden">
-                  {item._kind === "booking" && (
-                    <>
-                      {item.status === "pay_later" && (
-                        <Button
-                          size="sm"
-                          className="gap-2"
-                          onClick={() => handlePayNow(item.id)}
-                          data-testid={`button-pay-now-${item.id}`}
-                        >
-                          <CreditCard className="w-4 h-4" />
-                          {t.dashboard.payNow}
-                        </Button>
-                      )}
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => window.print()}
-                        className="gap-2"
-                        data-testid={`button-print-${item.id}`}
-                      >
-                        <Printer className="w-4 h-4" />
-                        {t.dashboard.printReceipt}
-                      </Button>
-                    </>
+                  {item._kind === "booking" && item.status === "pay_later" && (
+                    <Button
+                      size="sm"
+                      className="gap-2"
+                      onClick={() => handlePayNow(item.id)}
+                      data-testid={`button-pay-now-${item.id}`}
+                    >
+                      <CreditCard className="w-4 h-4" />
+                      {t.dashboard.payNow}
+                    </Button>
                   )}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handlePrint(item)}
+                    className="gap-2"
+                    data-testid={`button-print-${item.id}`}
+                  >
+                    <Printer className="w-4 h-4" />
+                    {t.dashboard.printReceipt}
+                  </Button>
                   {item._kind === "consultation" && (
                     <Link href="/consultation/receipt">
                       <Button variant="outline" size="sm" className="gap-2">
-                        <Printer className="w-4 h-4" />
                         View Receipt
                       </Button>
                     </Link>
