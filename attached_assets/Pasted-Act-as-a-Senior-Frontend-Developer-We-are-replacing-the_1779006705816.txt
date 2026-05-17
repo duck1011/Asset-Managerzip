@@ -1,0 +1,28 @@
+Act as a Senior Frontend Developer. We are replacing the moving motion blobs in the Hero section with an abstract, looping video background.
+
+CRITICAL RULES FOR VIDEO BACKGROUNDS:
+
+The video MUST be muted, autoplay, loop, and playsInline.
+We MUST use a heavy gradient overlay (scrim) to ensure text readability and blend the video into our Midnight Slate (#0F172A) brand color.
+The video must be sized with object-cover so it behaves like a background-size: cover and doesn't distort on different screen sizes.
+EXECUTE THE FOLLOWING TASKS:
+
+TASK 1: Implement the Video Background StructureIn your Hero component (app/pages/Hero.jsx or equivalent), completely remove the Framer Motion blobs.
+
+Update the Hero container structure to this exact layering system using Tailwind CSS:
+
+<div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-900">    {/* Layer 1: The Video */}  <video     autoPlay     loop     muted     playsInline    className="absolute top-0 left-0 w-full h-full object-cover z-0"    poster="/hero-poster.jpg" /* Fallback image while loading */  >    <source src="/hero-video.mp4" type="video/mp4" />  </video>  {/* Layer 2: The Brand Scrim (Crucial for readability) */}  <div className="absolute inset-0 z-10 bg-gradient-to-t from-slate-900 via-slate-900/70 to-slate-900/50"></div>    {/* Layer 3: Content (Text & Buttons) */}  <div className="relative z-20 text-center px-6 max-w-4xl mx-auto">    {/* ... Your NorthSouth Text and Buttons ... */}  </div></div>
+TASK 2: Scrim Polish & Brand Integration
+
+The gradient overlay from-slate-900 via-slate-900/70 to-slate-900/50 is what makes the video look premium and "part of the brand" rather than just slapped behind text.
+If the video you source has bright spots, adjust the opacity of the middle gradient (via-slate-900/80) until the text is perfectly readable.
+Ensure the bottom of the scrim blends seamlessly into whatever section follows the hero (which should have a bg-slate-900 or bg-slate-50 background).
+TASK 3: Asset Placeholders & Optimization
+
+Create a public/videos/ directory. Place a placeholder MP4 file named hero-video.mp4 there.
+Create a public/images/ directory. Place a placeholder JPG named hero-poster.jpg there (this is the image that shows before the video buffers).
+Ensure the video container does not cause horizontal scrollbar overflow (hence overflow-hidden on the parent).
+TASK 4: Clean up unused dependencies
+
+Since we are no longer using the Framer Motion blobs for the background, check if Framer Motion is used elsewhere (like the Chatbot or Media page). If it is NOT used anywhere else in the app, remove it from package.json to reduce bundle size.
+Execute this structure precisely.

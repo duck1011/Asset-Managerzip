@@ -1,6 +1,5 @@
 import { Link } from "wouter";
-import { motion } from "framer-motion";
-import { profile, services, mediaGallery } from "@/data/mock";
+import { services, mediaGallery } from "@/data/mock";
 import { ServiceCard } from "@/components/ServiceCard";
 import { MediaCard } from "@/components/MediaCard";
 import { Button } from "@/components/ui/button";
@@ -18,28 +17,25 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Hero Section — Cosmic Mesh with Motion Blobs */}
-      <section className="relative bg-slate-900 py-24 lg:py-40 overflow-hidden">
-        {/* Blob 1 — Cyan Core (center-left, slow float) */}
-        <motion.div
-          className="absolute top-1/2 left-1/4 w-[600px] h-[600px] bg-cyan-500/30 rounded-full blur-[120px] pointer-events-none"
-          animate={{ x: [0, 50, -30, 0], y: [0, -40, 20, 0], scale: [1, 1.1, 0.9, 1] }}
-          transition={{ duration: 20, ease: "easeInOut", repeat: Infinity, repeatType: "loop" }}
-        />
-        {/* Blob 2 — Indigo Accent (center-right) */}
-        <motion.div
-          className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none"
-          animate={{ x: [0, -60, 40, 0], y: [0, 30, -50, 0], scale: [1, 0.9, 1.15, 1] }}
-          transition={{ duration: 25, ease: "easeInOut", repeat: Infinity, repeatType: "loop" }}
-        />
-        {/* Blob 3 — Cyan Highlight (top-center) */}
-        <motion.div
-          className="absolute -top-20 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-cyan-400/20 rounded-full blur-[120px] pointer-events-none"
-          animate={{ x: [0, 30, -20, 0], y: [0, 60, 20, 0], scale: [1, 1.05, 0.95, 1] }}
-          transition={{ duration: 15, ease: "easeInOut", repeat: Infinity, repeatType: "loop" }}
-        />
+      {/* Hero Section — Video Background */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-slate-900">
+        {/* Layer 1: Video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute top-0 left-0 w-full h-full object-cover z-0"
+          poster="/images/hero-poster.jpg"
+        >
+          <source src="/videos/hero-video.mp4" type="video/mp4" />
+        </video>
 
-        <div className="container mx-auto px-4 relative z-10">
+        {/* Layer 2: Brand Scrim — blends video into Midnight Slate */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-b from-slate-900 via-slate-900/70 to-slate-900/50" />
+
+        {/* Layer 3: Content */}
+        <div className="relative z-20 container mx-auto px-4 py-24">
           <div className="max-w-3xl mx-auto text-center">
             <h1
               className="text-5xl md:text-7xl font-bold mb-8"
