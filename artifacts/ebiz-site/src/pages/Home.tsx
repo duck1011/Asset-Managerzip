@@ -17,19 +17,18 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section
-        className="relative py-24 lg:py-40 overflow-hidden"
-        style={{
-          backgroundImage: "url('/hero-bg.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        {/* Gradient scrim — dark at bottom, fades up */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/70 to-transparent" />
-        {/* Subtle cyan glow centre */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full blur-3xl pointer-events-none" style={{ background: "radial-gradient(circle, rgba(6,182,212,0.12) 0%, transparent 70%)" }} />
+      {/* Hero Section — Cosmic Mesh */}
+      <section className="relative bg-slate-900 py-24 lg:py-40 overflow-hidden">
+        {/* Blob 1 — Cyan Core */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500 rounded-full blur-[120px] opacity-30 pointer-events-none"
+          style={{ animation: "pulse 10s cubic-bezier(0.4, 0, 0.6, 1) infinite" }}
+        />
+        {/* Blob 2 — Deep Blue Accent */}
+        <div
+          className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-indigo-600 rounded-full blur-[100px] opacity-20 pointer-events-none"
+          style={{ animation: "pulse 10s cubic-bezier(0.4, 0, 0.6, 1) infinite" }}
+        />
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
@@ -39,7 +38,7 @@ export default function Home() {
               data-testid="text-hero-headline"
             >
               <span className="text-white">North</span>
-              <span style={{ color: "#06B6D4" }}>South</span>
+              <span className="text-cyan-400">South</span>
             </h1>
             <p className="text-xl md:text-2xl font-light text-slate-300 mb-10" data-testid="text-hero-tagline">
               {t.profile.tagline}
@@ -47,7 +46,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link href="/services">
                 <button
-                  className="inline-flex items-center gap-2 bg-cyan-500 text-slate-900 font-semibold px-8 py-3 rounded-full hover:bg-cyan-400 transition-colors text-lg"
+                  className="inline-flex items-center gap-2 bg-cyan-500 text-slate-900 font-semibold px-8 py-3 rounded-full hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/20 text-lg"
                   data-testid="button-hero-cta"
                 >
                   {t.home.heroCta}
@@ -56,7 +55,7 @@ export default function Home() {
               </Link>
               <Link href="/profile">
                 <button
-                  className="inline-flex items-center bg-white/10 text-white border border-white/30 backdrop-blur-sm px-8 py-3 rounded-full hover:bg-white/20 transition-colors text-lg"
+                  className="inline-flex items-center border border-slate-500 text-slate-300 px-8 py-3 rounded-full hover:border-white hover:text-white transition-all text-lg"
                   data-testid="button-hero-secondary"
                 >
                   {t.home.heroSecondary}

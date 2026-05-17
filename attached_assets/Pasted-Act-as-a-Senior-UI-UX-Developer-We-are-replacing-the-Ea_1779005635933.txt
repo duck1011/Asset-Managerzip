@@ -1,0 +1,24 @@
+Act as a Senior UI/UX Developer. We are replacing the Earth background image in the Hero section with a premium, code-driven "Cosmic Mesh" gradient aesthetic.
+
+STRICT DESIGN SYSTEM: Midnight Slate (#0F172A), Electric Cyan (#06B6D4). Font: Space Grotesk.
+
+Execute the following update to the Hero Section component:
+
+Remove the Image: Delete the <img> or background-image referencing the Earth picture. Remove any heavy, dark scrim overlays you previously added to make text readable over the photo.
+The Cosmic Mesh Background:
+Set the main Hero container background to bg-slate-900.
+Inside the Hero container, before the text content, add two absolute-positioned "blob" divs to create the mesh gradient effect.
+Blob 1 (Cyan Core): absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500 rounded-full blur-[120px] opacity-30
+Blob 2 (Deep Blue Accent): absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-indigo-600 rounded-full blur-[100px] opacity-20
+This creates a beautiful, glowing, fluid horizon behind the text without using any image files.
+Text Styling Update:
+Because the background is now perfectly controlled, update the Hero text:
+"North" should be pure white (text-white).
+"South" should be Electric Cyan (text-cyan-400).
+The tagline "Grow Smarter. Reach Further." should be text-slate-300 for a softer, premium feel against the dark mesh.
+Button Polish:
+"Our Services" button: bg-cyan-500 text-slate-900 font-semibold px-8 py-3 rounded-full hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/20 (Added a cyan box-shadow to make it glow against the dark background).
+"Learn About Us" button: border border-slate-500 text-slate-300 px-8 py-3 rounded-full hover:border-white hover:text-white transition-all.
+Subtle Animation:
+Add animate-pulse to Blob 1 and Blob 2 with a very slow duration (custom tailwind config or inline style animation: pulse 10s cubic-bezier(0.4, 0, 0.6, 1) infinite;) so the background subtly breathes and glows.
+Make sure the text container is relatively positioned (relative z-10) so it sits neatly above the glowing blobs.
