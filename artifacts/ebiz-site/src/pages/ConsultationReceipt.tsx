@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { format } from "date-fns";
 import { Printer, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
 
 interface Consultation {
   id: string;
@@ -43,12 +44,94 @@ export default function ConsultationReceipt() {
     return format(new Date(iso), "MMMM d, yyyy 'at' h:mm a");
   };
 
+  const handlePrint = () => {
+    const fullHtml = `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Receipt ${consultation.id} \u2014 NorthSouth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: 'Space Grotesk', sans-serif; background: #fff; color: #0f172a; }
+      @page { size: A4; margin: 12mm; }
+      @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+    </style>
+  </head>
+  <body>
+    <div style="max-width:580px;margin:0 auto;padding:32px;border:1px solid #e2e8f0;border-radius:16px;">
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:20px;border-bottom:2px solid #e2e8f0;">
+        <div>
+          <p style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.12em;margin:0 0 4px;">Receipt</p>
+          <p style="font-family:monospace;font-weight:700;font-size:17px;color:#0f172a;margin:0;">${consultation.id}</p>
+        </div>
+        <div style="font-size:26px;font-weight:700;letter-spacing:-0.04em;">
+          <span style="color:#0f172a;">North</span><span style="color:#06b6d4;">South</span>
+        </div>
+      </div>
+
+      <div style="background:#f8fafc;border-radius:10px;padding:12px 16px;margin-bottom:24px;">
+        <p style="font-size:12px;color:#64748b;margin:0 0 4px;">Scheduled for</p>
+        <p style="font-size:18px;font-weight:700;color:#0f172a;margin:0;">${formatDate(consultation.date)}</p>
+      </div>
+
+      <h2 style="font-size:15px;font-weight:700;color:#0f172a;border-bottom:1px solid #e2e8f0;padding-bottom:12px;margin-bottom:0;">Consultation Details</h2>
+      <table style="width:100%;border-collapse:collapse;">
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:11px 0;color:#64748b;font-size:13px;width:42%;">Name</td>
+          <td style="padding:11px 0;font-weight:600;color:#0f172a;text-align:right;font-size:14px;">${consultation.name}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:11px 0;color:#64748b;font-size:13px;">Email</td>
+          <td style="padding:11px 0;font-weight:600;color:#0f172a;text-align:right;font-size:14px;">${consultation.email}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:11px 0;color:#64748b;font-size:13px;">Preferred Date</td>
+          <td style="padding:11px 0;font-weight:600;color:#0f172a;text-align:right;font-size:14px;">${formatDate(consultation.date)}</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:11px 0;color:#64748b;font-size:13px;">Booked On</td>
+          <td style="padding:11px 0;font-weight:600;color:#0f172a;text-align:right;font-size:14px;">${formatCreatedAt(consultation.createdAt)}</td>
+        </tr>
+      </table>
+
+      <div style="margin-top:14px;padding:12px 16px;background:#f8fafc;border-radius:8px;">
+        <p style="color:#64748b;font-size:12px;margin:0 0 5px;">What you need help with:</p>
+        <p style="color:#334155;font-size:13px;line-height:1.6;margin:0;">${consultation.need}</p>
+      </div>
+
+      <div style="margin-top:14px;padding:14px 20px;background:#ecfeff;border:1px solid #cffafe;border-radius:10px;text-align:center;">
+        <p style="color:#0e7490;font-weight:600;font-size:14px;margin:0;">Free Consultation \u2014 No Charge</p>
+        <p style="color:#0891b2;font-size:12px;margin:5px 0 0;">We\u2019ll reach out within 24 hours to confirm your session.</p>
+      </div>
+
+      <div style="margin-top:28px;padding-top:16px;border-top:1px solid #e2e8f0;text-align:center;color:#94a3b8;font-size:11px;">
+        NorthSouth &bull; hello@northsouth.agency &bull; +1 (555) 123-4567
+      </div>
+    </div>
+    <script>
+      window.onload = function() { window.print(); window.close(); };
+    </script>
+  </body>
+</html>`;
+
+    const printWindow = window.open("", "_blank", "width=700,height=900");
+    if (!printWindow) {
+      toast.error("Please allow pop-ups to print receipts.");
+      return;
+    }
+    printWindow.document.write(fullHtml);
+    printWindow.document.close();
+  };
+
   return (
-    <div className="min-h-screen bg-background py-16 print:py-4 print:bg-white">
+    <div className="min-h-screen bg-background py-16">
       <div className="container mx-auto px-4 max-w-2xl">
 
-        {/* Back link — hidden on print */}
-        <div className="mb-8 print:hidden">
+        {/* Back link */}
+        <div className="mb-8">
           <Link href="/dashboard">
             <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
               <ArrowLeft className="w-4 h-4" />
@@ -58,10 +141,10 @@ export default function ConsultationReceipt() {
         </div>
 
         {/* Receipt card */}
-        <div className="bg-white border rounded-2xl overflow-hidden shadow-sm print:shadow-none print:border">
+        <div className="bg-white border rounded-2xl overflow-hidden shadow-sm">
 
           {/* Receipt header */}
-          <div className="bg-slate-900 px-8 py-8 text-white print:bg-slate-900">
+          <div className="bg-slate-900 px-8 py-8 text-white">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <p className="text-slate-400 text-xs uppercase tracking-widest mb-1">Receipt</p>
@@ -107,10 +190,10 @@ export default function ConsultationReceipt() {
             </div>
           </div>
 
-          {/* Receipt footer — hidden on print */}
-          <div className="px-8 pb-8 bg-white print:hidden">
+          {/* Receipt footer */}
+          <div className="px-8 pb-8 bg-white">
             <Button
-              onClick={() => window.print()}
+              onClick={handlePrint}
               className="w-full gap-2"
               variant="outline"
             >

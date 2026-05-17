@@ -116,9 +116,12 @@ export default function Dashboard() {
           <td style="padding:20px 0;font-size:28px;font-weight:700;color:#06b6d4;text-align:right;">${b.service.price}</td>
         </tr>
       </table>
-      <div style="margin-top:16px;padding:14px 20px;background:#ecfdf5;border-radius:10px;display:flex;align-items:center;gap:10px;">
-        <span style="color:#16a34a;font-size:20px;">&#10003;</span>
-        <span style="color:#15803d;font-weight:600;font-size:14px;">Payment ${b.status === "pay_later" ? "Pending" : "Confirmed"}</span>
+      <div style="margin-top:16px;padding:14px 20px;background:${b.status === "pay_later" ? "#fefce8" : "#ecfdf5"};border:1px solid ${b.status === "pay_later" ? "#fef08a" : "#bbf7d0"};border-radius:10px;display:flex;align-items:center;gap:10px;">
+        <span style="color:${b.status === "pay_later" ? "#a16207" : "#16a34a"};font-size:18px;">${b.status === "pay_later" ? "&#9679;" : "&#10003;"}</span>
+        <div>
+          <span style="color:${b.status === "pay_later" ? "#a16207" : "#15803d"};font-weight:700;font-size:14px;">Payment ${b.status === "pay_later" ? "Pending" : "Confirmed"}</span>
+          ${b.status === "pay_later" ? `<p style="color:#ca8a04;font-size:12px;margin:2px 0 0;">Complete payment to confirm your booking.</p>` : ""}
+        </div>
       </div>
     ` : `
       <table style="width:100%;border-collapse:collapse;">
@@ -151,28 +154,29 @@ export default function Dashboard() {
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Receipt ${item.id} — NorthSouth</title>
+    <title>Receipt ${item.id} \u2014 NorthSouth</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body { font-family: 'Space Grotesk', sans-serif; background: #fff; color: #0f172a; }
+      @page { size: A4; margin: 12mm; }
       @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
     </style>
   </head>
   <body>
-    <div style="max-width:600px;margin:40px auto;padding:40px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid #e2e8f0;">
+    <div style="max-width:580px;margin:0 auto;padding:32px;border:1px solid #e2e8f0;border-radius:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:20px;border-bottom:2px solid #e2e8f0;">
         <div>
           <p style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.12em;margin:0 0 4px;">Receipt</p>
-          <p style="font-family:monospace;font-weight:700;font-size:18px;color:#0f172a;margin:0;">${item.id}</p>
+          <p style="font-family:monospace;font-weight:700;font-size:17px;color:#0f172a;margin:0;">${item.id}</p>
         </div>
-        <div style="font-size:28px;font-weight:700;letter-spacing:-0.04em;">
+        <div style="font-size:26px;font-weight:700;letter-spacing:-0.04em;">
           <span style="color:#0f172a;">North</span><span style="color:#06b6d4;">South</span>
         </div>
       </div>
       ${bodyHtml}
-      <div style="margin-top:40px;padding-top:20px;border-top:1px solid #e2e8f0;text-align:center;color:#94a3b8;font-size:12px;">
+      <div style="margin-top:28px;padding-top:16px;border-top:1px solid #e2e8f0;text-align:center;color:#94a3b8;font-size:11px;">
         NorthSouth &bull; hello@northsouth.agency &bull; +1 (555) 123-4567
       </div>
     </div>
