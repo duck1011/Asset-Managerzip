@@ -45,7 +45,7 @@ export function Navbar() {
   return (
     <nav
       className={`fixed top-0 w-full z-50 backdrop-blur-xl border-b border-white/10 transition-all duration-300 ${
-        scrolled ? "bg-slate-900/80 shadow-lg" : "bg-slate-900/40"
+        scrolled ? "bg-slate-950/80 shadow-lg" : "bg-slate-950/40"
       }`}
       data-testid="navbar"
     >
