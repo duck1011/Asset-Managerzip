@@ -34,6 +34,18 @@ export default function Consultation() {
       };
       const existing = JSON.parse(localStorage.getItem("consultations") || "[]");
       localStorage.setItem("consultations", JSON.stringify([consultation, ...existing]));
+      fetch("/api/consultations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          id: consultation.id,
+          name: consultation.name,
+          email: consultation.email,
+          need: consultation.need,
+          date: consultation.date,
+        }),
+      });
       toast.success("Confirmation sent to your phone!");
       setLocation("/consultation/receipt");
     }, 1000);

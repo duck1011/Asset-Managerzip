@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Globe, LayoutDashboard } from "lucide-react";
+import { Menu, X, Globe, LayoutDashboard, LogIn, LogOut, UserCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/context/LanguageContext";
+import { useAuth } from "@workspace/replit-auth-web";
 
 export function Navbar() {
   const [location] = useLocation();
@@ -30,6 +31,8 @@ export function Navbar() {
       clearInterval(interval);
     };
   }, []);
+
+  const { user, isLoading: authLoading, isAuthenticated, login, logout } = useAuth();
 
   const otherLang = lang === "en" ? "id" : "en";
   const langLabel = lang === "en" ? "ID" : "EN";
@@ -106,6 +109,35 @@ export function Navbar() {
           <Link href="/booking">
             <Button data-testid="button-nav-contact">{t.nav.booking}</Button>
           </Link>
+
+          {/* Auth */}
+          {!authLoading && (
+            isAuthenticated ? (
+              <div className="flex items-center gap-2 pl-2 border-l border-white/10">
+                {user?.profileImageUrl ? (
+                  <img src={user.profileImageUrl} alt={user.firstName ?? "User"} className="w-7 h-7 rounded-full object-cover" />
+                ) : (
+                  <UserCircle className="w-7 h-7 text-slate-400" />
+                )}
+                <span className="text-sm text-slate-300 hidden lg:block">{user?.firstName}</span>
+                <button
+                  onClick={logout}
+                  className="flex items-center gap-1 text-sm text-slate-400 hover:text-red-400 transition-colors"
+                  title="Log out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={login}
+                className="flex items-center gap-1.5 text-sm font-medium text-slate-300 hover:text-cyan-400 transition-colors border border-white/20 rounded-md px-3 py-1.5"
+              >
+                <LogIn className="w-4 h-4" />
+                Log in
+              </button>
+            )
+          )}
         </div>
 
         {/* Mobile Row */}
@@ -174,6 +206,37 @@ export function Navbar() {
                 {t.nav.booking}
               </Button>
             </Link>
+
+            {/* Auth — mobile */}
+            {!authLoading && (
+              isAuthenticated ? (
+                <div className="flex items-center justify-between pt-2 border-t border-white/10">
+                  <div className="flex items-center gap-2">
+                    {user?.profileImageUrl ? (
+                      <img src={user.profileImageUrl} alt={user.firstName ?? "User"} className="w-7 h-7 rounded-full object-cover" />
+                    ) : (
+                      <UserCircle className="w-7 h-7 text-slate-400" />
+                    )}
+                    <span className="text-sm text-slate-300">{user?.firstName ?? user?.email}</span>
+                  </div>
+                  <button
+                    onClick={logout}
+                    className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-red-400 transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Log out
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={login}
+                  className="flex items-center justify-center gap-2 w-full text-sm font-medium text-slate-300 border border-white/20 rounded-lg px-4 py-2 hover:bg-white/5 transition-colors mt-1"
+                >
+                  <LogIn className="w-4 h-4" />
+                  Log in
+                </button>
+              )
+            )}
           </div>
         </div>
       )}

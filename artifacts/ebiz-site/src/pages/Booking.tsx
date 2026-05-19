@@ -80,6 +80,21 @@ export default function Booking() {
       };
       const existing = JSON.parse(localStorage.getItem("userBookings") || "[]");
       localStorage.setItem("userBookings", JSON.stringify([booking, ...existing]));
+      fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          id: booking.id,
+          service: booking.service,
+          name: booking.name,
+          email: booking.email,
+          phone: booking.phone,
+          date: booking.date,
+          timeSlot: booking.timeSlot,
+          status,
+        }),
+      });
       toast.success(status === "paid" ? t.booking.toastSuccess : t.booking.toastPayLater);
       setLocation("/dashboard");
     }, 1200);

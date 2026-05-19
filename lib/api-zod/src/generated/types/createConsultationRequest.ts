@@ -6,6 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface HealthStatus {
-  status: string;
+export interface CreateConsultationRequest {
+  id: string;
+  name: string;
+  email: string;
+  need: string;
+  date: string;
 }
