@@ -1,0 +1,42 @@
+Act as a Principal Full-Stack Engineer with deep expertise in decoupled web architecture, security, and modern client-side rendering (React + Vite).
+
+I need you to architect and provide the implementation strategy for a client-facing web application with strict authentication, booking, and admin requirements. Do not provide simplistic, tutorial-level code. I want production-ready architecture, database schemas, secure API design, and protected client-side routing.
+
+Tech Stack: React + Vite (Client), Node.js/Express (API Server), PostgreSQL + Prisma (Database), Stripe (Payments), Framer Motion (Animations).
+
+1. Authentication & User Onboarding:
+
+Implement a unified authentication system supporting 4 methods: Google OAuth, GitHub OAuth, Email/Password, and WhatsApp OTP (via Twilio API on the backend).
+Crucial Architecture Constraint: Implement "Account Linking." If a user signs up with Email, and later logs in with Google using the same email, their accounts must merge into a single user record.
+The Vite client must communicate with the Express backend to handle these OAuth flows and receive a JWT (or secure HTTP-only cookie) for session management.
+On initial sign-up, collect and persist necessary user metadata (Name, Email, Phone) to be used later for bookings and receipts.
+2. Booking System (Free & Paid):
+
+Design a Prisma data model for Booking that links to the User model.
+The system must support two booking types: FREE_CONSULTATION and PAID_BOOKING.
+For PAID_BOOKING, the Vite client must request a Stripe Checkout Session from the Express backend. The backend creates the session and returns the URL. The backend must also implement a Stripe Webhook endpoint to securely confirm payment before updating the booking status to CONFIRMED.
+For FREE_CONSULTATION, the client simply calls a POST endpoint to create the booking.
+3. Receipt Generation:
+
+Upon successful booking (paid or free), the user is redirected to a /receipt/:bookingId route in the Vite app.
+The Vite app fetches booking details from the Express API. The API must attach all required User PII (Name, Email, Phone) and Booking Details (Type, Date/Time, Transaction ID, Amount/Paid Status) to the response.
+Provide a strategy using a library like @react-pdf/renderer or jspdf to allow the user to download a professionally formatted PDF receipt directly from the browser.
+4. Admin Dashboard & Security (RBAC):
+
+Strict Security Requirement: Implement Role-Based Access Control. Only the website owner (identified by an isAdmin claim in the JWT/session) can access the /admin routes.
+Client-Side: Implement a React Router v6 protected route wrapper (e.g., <AdminRoute>). If the user's auth state does not have isAdmin: true, redirect them away.
+Server-Side (The real security): The Express API endpoints for /api/admin/* MUST verify the JWT on every single request. If the token lacks the admin claim, return 403 Forbidden. Never rely solely on hiding UI buttons.
+The Admin Dashboard must aggregate and display all client data: User profiles, linked accounts, booking history, and payment statuses.
+5. Brand Animation (UX/UI):
+
+On initial page load and every hard refresh, implement an entry animation before the main React DOM content is visible.
+The text "NorthSouth" must animate in a fluid, dynamic moving motion (e.g., letters sliding from top/bottom, continuous horizontal drift, or elastic snap) using Framer Motion.
+Once the animation completes (after ~2.5 seconds), transition smoothly (fade/slide up) to reveal the main application shell.
+SPA Constraint: Store a boolean in sessionStorage (e.g., hasSeenIntro). The animation must only play if this flag is not set. Once played, set the flag. On soft SPA navigations (using React Router), the animation must NOT replay. Clear the flag on window unload/refresh to ensure it plays again on hard refreshes.
+Deliverables required in your response:
+
+Database Schema: Provide the Prisma schema for Users, Accounts, Bookings, and Roles. Show the relationships clearly.
+API Route Structure: Outline the Express.js API routes needed for Auth, Booking, Stripe Webhooks, and Admin data fetching. Specify which routes require auth middleware.
+Auth & Admin Flow: Explain the JWT generation flow and how the isAdmin claim is verified on both the React Router layer and the Express middleware layer.
+React Router Setup: Provide the code for the App.jsx showing the BrowserRouter, the <AdminRoute> wrapper, and the Framer Motion splash screen logic.
+Frontend Animation: Provide the React component code for the "NorthSouth" splash animation using Framer Motion and the sessionStorage logic.

@@ -1,5 +1,7 @@
+import { useState, useEffect } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AnimatePresence } from "framer-motion";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster as HotToaster } from "react-hot-toast";
@@ -17,6 +19,7 @@ import Dashboard from "@/pages/Dashboard";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Chatbot } from "@/components/Chatbot";
+import { SplashScreen } from "@/components/SplashScreen";
 import { LanguageProvider } from "@/context/LanguageContext";
 
 const queryClient = new QueryClient();
@@ -45,10 +48,30 @@ function Router() {
 }
 
 function App() {
+  const [showSplash, setShowSplash] = useState<boolean>(
+    () => !sessionStorage.getItem("hasSeenIntro")
+  );
+
+  useEffect(() => {
+    const clearIntro = () => sessionStorage.removeItem("hasSeenIntro");
+    window.addEventListener("beforeunload", clearIntro);
+    return () => window.removeEventListener("beforeunload", clearIntro);
+  }, []);
+
+  const handleSplashComplete = () => {
+    sessionStorage.setItem("hasSeenIntro", "1");
+    setShowSplash(false);
+  };
+
   return (
     <LanguageProvider>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
+          <AnimatePresence>
+            {showSplash && (
+              <SplashScreen key="splash" onComplete={handleSplashComplete} />
+            )}
+          </AnimatePresence>
           <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
             <Router />
           </WouterRouter>
