@@ -1,0 +1,5 @@
+# Copy to CNAME (same folder) and set your custom domain, e.g. northsouth.co
+# When CNAME exists, GitHub Pages builds use BASE_PATH=/ (root).
+# Configure the same hostname under GitHub → Settings → Pages → Custom domain.
+
+northsouth.co

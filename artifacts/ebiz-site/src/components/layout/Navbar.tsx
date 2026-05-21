@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
+import { assetUrl } from "@/lib/asset-url";
 import { Menu, X, Globe, LogIn, LogOut, UserCircle } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@workspace/replit-auth-web";
@@ -140,7 +141,7 @@ export function Navbar() {
     >
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 lg:px-8">
         <Link href="/" className="flex shrink-0 items-center gap-2.5" data-testid="link-logo">
-          <img src="/logo-icon.png" alt="" className="h-8 w-8 object-contain" />
+          <img src={assetUrl("logo-icon.png")} alt="" className="h-8 w-8 object-contain" />
           <span className="text-xl font-semibold tracking-tight">
             <span className="text-white">North</span>
             <span className="text-[#00D4FF]">South</span>

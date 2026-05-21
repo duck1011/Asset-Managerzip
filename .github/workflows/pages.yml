@@ -1,12 +1,26 @@
-# Optional: deploy the marketing site to GitHub Pages.
-# Enable in repo Settings → Pages → Source: GitHub Actions.
+# Deploy artifacts/ebiz-site to GitHub Pages (static Vite build).
+# Required: Settings → Pages → Build and deployment → Source: GitHub Actions
 
 name: Deploy GitHub Pages
 
 on:
   push:
     branches: [main, master]
+    paths:
+      - "artifacts/ebiz-site/**"
+      - "lib/**"
+      - "scripts/build-pages.mjs"
+      - "scripts/resolve-pages-base.mjs"
+      - "scripts/deploy-pages.mjs"
+      - ".github/workflows/pages.yml"
+      - "package.json"
+      - "pnpm-lock.yaml"
   workflow_dispatch:
+    inputs:
+      base_path:
+        description: "Vite BASE_PATH override (e.g. / or /Asset-Managerzip/)"
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -23,6 +37,11 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      PORT: "5173"
+      GITHUB_PAGES: "true"
+      NODE_ENV: production
+      PAGES_REPO_NAME: ${{ github.event.repository.name }}
     steps:
       - uses: actions/checkout@v4
 
@@ -38,11 +57,34 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build site for GitHub Pages
-        run: pnpm --filter @workspace/ebiz-site run build
+      - name: Resolve Pages base path
+        id: pages
+        shell: bash
+        run: |
+          if [ -n "${{ github.event.inputs.base_path }}" ]; then
+            BASE="${{ github.event.inputs.base_path }}"
+          elif [ -n "${{ vars.PAGES_BASE_PATH }}" ]; then
+            BASE="${{ vars.PAGES_BASE_PATH }}"
+          elif [ -f artifacts/ebiz-site/public/CNAME ] || [ -n "${{ vars.PAGES_CUSTOM_DOMAIN }}" ]; then
+            BASE="/"
+          else
+            BASE="/${{ github.event.repository.name }}/"
+          fi
+          BASE_PATH=$(node --input-type=module -e "import { normalizeBasePath } from './scripts/resolve-pages-base.mjs'; console.log(normalizeBasePath(process.argv[1]));" "$BASE")
+          echo "base_path=$BASE_PATH" >> "$GITHUB_OUTPUT"
+
+      - name: Build NorthSouth site
+        run: pnpm run build:pages
         env:
-          PORT: "5173"
-          BASE_PATH: /${{ github.event.repository.name }}/
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          PAGES_CUSTOM_DOMAIN: ${{ vars.PAGES_CUSTOM_DOMAIN }}
+
+      - name: Verify build output
+        run: |
+          test -f artifacts/ebiz-site/dist/public/index.html
+          test -f artifacts/ebiz-site/dist/public/404.html
+          test -f artifacts/ebiz-site/dist/public/.nojekyll
+          echo "Deploying static site from artifacts/ebiz-site/dist/public"
 
       - uses: actions/configure-pages@v5
 

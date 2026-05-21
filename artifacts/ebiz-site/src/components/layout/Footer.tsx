@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { assetUrl } from "@/lib/asset-url";
 import { Instagram, Linkedin, Twitter } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
@@ -14,7 +15,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-4 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
         <div>
           <Link href="/" className="inline-flex items-center gap-2">
-            <img src="/logo-icon.png" alt="" className="h-8 w-8" />
+            <img src={assetUrl("logo-icon.png")} alt="" className="h-8 w-8" />
             <span className="text-lg font-semibold text-white">NorthSouth</span>
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed">{f.tagline}</p>

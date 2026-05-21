@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
+import { assetUrl } from "@/lib/asset-url";
 
 interface SplashScreenProps {
   onComplete: () => void;
@@ -29,7 +30,7 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
 
         {/* Logo mark */}
         <motion.img
-          src="/logo-icon.png"
+          src={assetUrl("logo-icon.png")}
           alt="NorthSouth"
           className="w-16 h-16 object-contain"
           initial={{ opacity: 0, scale: 0.4 }}

@@ -66,9 +66,22 @@ scripts/           # Repo utilities
 ## CI and GitHub Pages
 
 - **CI** (`.github/workflows/ci.yml`) runs `pnpm install` and `pnpm run build` on every push/PR to `main` or `master`.
-- **GitHub Pages** (`.github/workflows/pages.yml`) builds `ebiz-site` with `BASE_PATH=/<repo-name>/` and deploys `artifacts/ebiz-site/dist/public`. Enable **Settings → Pages → Build and deployment → GitHub Actions**.
+- **GitHub Pages** (`.github/workflows/pages.yml`) builds and deploys the Vite app from `artifacts/ebiz-site/dist/public`.
 
-For a custom domain or root-hosted Pages, set `BASE_PATH=/` in the Pages workflow.
+**If Pages shows the README instead of the site**, GitHub is serving the repo root as a Jekyll site. Fix:
+
+1. **Settings → Pages → Build and deployment → Source:** choose **GitHub Actions** (not “Deploy from a branch”).
+2. Re-run the **Deploy GitHub Pages** workflow (or push to `main`).
+3. Open `https://<user>.github.io/<repo>/` (not the repo file browser).
+
+| Command | Purpose |
+|---------|---------|
+| `pnpm run build:pages` | Production build with correct `BASE_PATH` + SPA `404.html` |
+| `pnpm run deploy:pages` | Build and publish to the `gh-pages` branch (manual alternative) |
+
+**Custom domain (NorthSouth):** copy `artifacts/ebiz-site/public/CNAME.example` to `public/CNAME`, set your domain (e.g. `northsouth.co`), and add the same hostname under **Settings → Pages → Custom domain**. Builds then use `BASE_PATH=/`. Or set repository variable `PAGES_CUSTOM_DOMAIN=1`.
+
+**Project site URL:** `BASE_PATH=/Asset-Managerzip/` (auto in Actions). Override with repository variable `PAGES_BASE_PATH` if needed.
 
 ## Production notes
 

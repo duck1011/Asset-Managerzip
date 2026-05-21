@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+import { githubPagesPlugin } from "./github-pages.plugin";
 
 const rawPort = process.env.PORT ?? "5173";
 
@@ -12,7 +13,21 @@ if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
 
-const basePath = process.env.BASE_PATH ?? "/";
+function normalizeBasePath(basePath: string): string {
+  if (!basePath || basePath === "/") {
+    return "/";
+  }
+
+  let normalized = basePath.startsWith("/") ? basePath : `/${basePath}`;
+  if (!normalized.endsWith("/")) {
+    normalized += "/";
+  }
+
+  return normalized;
+}
+
+const basePath = normalizeBasePath(process.env.BASE_PATH ?? "/");
+const outDir = path.resolve(import.meta.dirname, "dist/public");
 
 export default defineConfig({
   base: basePath,
@@ -20,6 +35,7 @@ export default defineConfig({
     react(),
     tailwindcss(),
     runtimeErrorOverlay(),
+    githubPagesPlugin(outDir),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [
@@ -43,7 +59,7 @@ export default defineConfig({
   },
   root: path.resolve(import.meta.dirname),
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    outDir,
     emptyOutDir: true,
   },
   server: {
