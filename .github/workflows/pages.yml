@@ -23,7 +23,7 @@ on:
         default: ""
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -94,3 +94,12 @@ jobs:
 
       - id: deployment
         uses: actions/deploy-pages@v4
+
+      # Fallback: publish the same build to the gh-pages branch.
+      # Use when Settings → Pages → Source = "Deploy from a branch" → gh-pages / (root).
+      - name: Publish gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: artifacts/ebiz-site/dist/public
+          force_orphan: true

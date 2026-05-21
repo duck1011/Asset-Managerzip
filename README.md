@@ -68,11 +68,12 @@ scripts/           # Repo utilities
 - **CI** (`.github/workflows/ci.yml`) runs `pnpm install` and `pnpm run build` on every push/PR to `main` or `master`.
 - **GitHub Pages** (`.github/workflows/pages.yml`) builds and deploys the Vite app from `artifacts/ebiz-site/dist/public`.
 
-**If Pages shows the README instead of the site**, GitHub is serving the repo root as a Jekyll site. Fix:
+**If Pages shows the README instead of the site:** the deploy workflow succeeded, but **Pages source is still `main` / (root)**. GitHub Jekyll renders root `README.md` as the homepage. Built files live only in the Actions artifact (`artifacts/ebiz-site/dist/public/index.html` with `<div id="root">`), not on `main` (`dist/` is gitignored).
 
-1. **Settings → Pages → Build and deployment → Source:** choose **GitHub Actions** (not “Deploy from a branch”).
-2. Re-run the **Deploy GitHub Pages** workflow (or push to `main`).
-3. Open `https://<user>.github.io/<repo>/` (not the repo file browser).
+Fix (pick one):
+
+1. **Recommended:** **Settings → Pages → Build and deployment → Source → GitHub Actions**, then re-run **Deploy GitHub Pages**.
+2. **Alternative:** **Settings → Pages → Source → Deploy from a branch → `gh-pages` / (root)**. The workflow also publishes the Vite build to the `gh-pages` branch on each run.
 
 | Command | Purpose |
 |---------|---------|
