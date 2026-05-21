@@ -21,14 +21,16 @@ import { Footer } from "@/components/layout/Footer";
 import { Chatbot } from "@/components/Chatbot";
 import { SplashScreen } from "@/components/SplashScreen";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
 function Router() {
   return (
     <div className="flex flex-col min-h-screen">
+      <ScrollToTop />
       <Navbar />
-      <main className="flex-1 pt-16">
+      <main className="flex-1 pt-[70px]">
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/profile" component={Profile} />

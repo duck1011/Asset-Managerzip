@@ -64,24 +64,29 @@ A modern, multilingual e-business platform for digital agency services, media ma
 
 ## Getting Started
 
+From the **repository root** (recommended):
+
 ```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Type-check
-npm run typecheck
-
-# Build for production
-npm run build
+corepack enable
+pnpm install
+pnpm run dev
 ```
 
-> **Note:** This project is part of a pnpm monorepo. When running from the repo root, use:
-> ```bash
-> pnpm --filter @workspace/ebiz-site run dev
-> ```
+Or from this package only (after `pnpm install` at the root):
+
+```bash
+pnpm run dev
+pnpm run typecheck
+pnpm run build
+```
+
+Optional env vars for Vite (defaults shown):
+
+```bash
+PORT=5173 BASE_PATH=/ pnpm run dev
+```
+
+See the root [README.md](../../README.md) for CI, GitHub Pages, and monorepo scripts.
 
 ---
 

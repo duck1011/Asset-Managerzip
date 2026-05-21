@@ -5,13 +5,15 @@ const translations = {
     // Navbar
     nav: {
       home: "Home",
-      about: "About Us",
+      about: "About",
       services: "Services",
+      ourWork: "Our Work",
       media: "Media Studio",
-      contact: "Contact Us",
+      contact: "Contact",
       dashboard: "My Dashboard",
       booking: "Book a Service",
-      consultation: "Free Consultation",
+      consultation: "Book Consultation",
+      login: "Login",
     },
 
     // Footer
@@ -33,6 +35,202 @@ const translations = {
       recentWorkDesc:
         "A selection of our latest projects driving measurable growth for clients.",
       exploreMedia: "Explore Media Studio",
+    },
+
+    landing: {
+      socialProof: {
+        label: "Trusted by",
+      },
+      hero: {
+        title: "Scale Your Business With Digital Solutions That Convert",
+        titleLines: [
+          "Scale Your Business",
+          "With Digital Solutions That Convert",
+        ],
+        subtitle:
+          "Website Development, Branding, Performance Marketing, and Analytics — managed in one place.",
+        ctaPrimary: "Book Free Consultation",
+        ctaSecondary: "View Our Work",
+        trustStars: "⭐⭐⭐⭐⭐ Trusted by 120+ businesses",
+        trustText: "Join companies that grow with measurable digital strategy.",
+        trustTags: "Website • Branding • Ads • Analytics",
+      },
+      whyChoose: {
+        title: "Why NorthSouth",
+        items: [
+          { title: "Fast Delivery", description: "We move quickly without sacrificing quality." },
+          { title: "Data Driven", description: "Every decision backed by analytics." },
+          { title: "Modern Design", description: "Designed for usability and conversions." },
+          { title: "Dedicated Support", description: "Support through every step." },
+        ],
+      },
+      services: {
+        title: "Our Services",
+        subtitle: "End-to-end digital capabilities built to scale your brand and revenue.",
+        learnMore: "Learn More",
+        items: [
+          {
+            title: "Website Development",
+            description: "Fast, conversion-focused websites engineered for growth.",
+          },
+          {
+            title: "UI/UX Design",
+            description: "Interfaces that feel premium and guide users to action.",
+          },
+          {
+            title: "Digital Marketing",
+            description: "Campaigns that reach the right audience at the right time.",
+          },
+          {
+            title: "SEO Optimization",
+            description: "Organic visibility that compounds month over month.",
+          },
+          {
+            title: "Brand Strategy",
+            description: "Positioning and identity that stand out in crowded markets.",
+          },
+          {
+            title: "Data Analytics",
+            description: "Clear insights so every marketing dollar works harder.",
+          },
+        ],
+      },
+      metrics: {
+        title: "Results That Matter",
+        subtitle: "Measurable impact across every engagement.",
+        items: [
+          { value: 120, suffix: "+", label: "Projects Delivered", decimals: 0 },
+          { value: 95, suffix: "%", label: "Client Satisfaction", decimals: 0 },
+          { value: 300, suffix: "%", label: "Average Growth", decimals: 0 },
+          { value: 24, suffix: "/7", label: "Support", decimals: 0 },
+        ],
+      },
+      portfolio: {
+        title: "Projects That Deliver Results",
+        subtitle: "Real outcomes from brands we've helped scale.",
+        viewAll: "View Full Portfolio",
+        viewProject: "View Project",
+        items: [
+          {
+            name: "Harlow Bakery",
+            category: "E-commerce",
+            result: "+120% traffic growth",
+            description: "Full-funnel redesign and SEO that doubled organic reach in one quarter.",
+            tags: ["Web Design", "SEO", "Analytics"],
+          },
+          {
+            name: "Peak Outfitters",
+            category: "Retail",
+            result: "+45% conversion increase",
+            description: "Premium storefront experience with performance marketing integration.",
+            tags: ["Branding", "Web Design", "Ads"],
+          },
+          {
+            name: "Luna Spa",
+            category: "Hospitality",
+            result: "+300% engagement",
+            description: "Brand refresh and content system that elevated social presence.",
+            tags: ["Branding", "Content", "Analytics"],
+          },
+        ],
+      },
+      process: {
+        title: "How We Work",
+        steps: [
+          { title: "Discovery", description: "Understand goals, audience, and constraints." },
+          { title: "Strategy", description: "Define roadmap, KPIs, and success metrics." },
+          { title: "Design", description: "Craft visuals and flows that convert." },
+          { title: "Development", description: "Build, test, and optimize for performance." },
+          { title: "Launch", description: "Ship, measure, and iterate for growth." },
+        ],
+      },
+      testimonials: {
+        title: "What Clients Say",
+        items: [
+          {
+            name: "Sarah Chen",
+            company: "Harlow Bakery",
+            companyInitial: "H",
+            avatar: "https://i.pravatar.cc/96?img=5",
+            review:
+              "NorthSouth transformed our online presence. Traffic doubled in three months and our booking flow finally converts.",
+          },
+          {
+            name: "Marcus Webb",
+            company: "Peak Outfitters",
+            companyInitial: "P",
+            avatar: "https://i.pravatar.cc/96?img=12",
+            review:
+              "Professional, fast, and data-driven. The new site paid for itself within the first quarter.",
+          },
+          {
+            name: "Elena Rodriguez",
+            company: "Luna Spa",
+            companyInitial: "L",
+            avatar: "https://i.pravatar.cc/96?img=25",
+            review:
+              "Their team understood our brand instantly. Creative work that actually drives bookings.",
+          },
+          {
+            name: "James Okonkwo",
+            company: "ClearView Law",
+            companyInitial: "C",
+            avatar: "https://i.pravatar.cc/96?img=33",
+            review:
+              "Clear communication and exceptional results on our ad campaigns. Highly recommend.",
+          },
+        ],
+      },
+      faq: {
+        title: "Frequently Asked Questions",
+        items: [
+          {
+            question: "How long does website development take?",
+            answer:
+              "Most projects take 4–8 weeks depending on scope. We provide a detailed timeline after discovery.",
+          },
+          {
+            question: "Can I request only marketing services?",
+            answer:
+              "Yes. You can engage us for SEO, paid ads, or content without a full website build.",
+          },
+          {
+            question: "How many revisions are included?",
+            answer:
+              "Each package includes two revision rounds per phase. Additional rounds can be added if needed.",
+          },
+          {
+            question: "Do you provide support after launch?",
+            answer:
+              "Yes. We offer ongoing maintenance, analytics reporting, and optimization retainers.",
+          },
+        ],
+      },
+      cta: {
+        title: "Ready to Grow Your Business?",
+        subtitle: "Let's create something that delivers real results.",
+        bookConsultation: "Book Consultation",
+        contactUs: "Contact Us",
+      },
+      footer: {
+        tagline: "Premium digital solutions for brands that want to grow smarter.",
+        quickLinks: "Quick Links",
+        quickLinksItems: [
+          { label: "Services", href: "/services" },
+          { label: "Dashboard", href: "/dashboard" },
+          { label: "About", href: "/profile" },
+          { label: "Contact", href: "/#contact" },
+        ],
+        servicesTitle: "Services",
+        servicesItems: [
+          "Website Development",
+          "UI/UX Design",
+          "Digital Marketing",
+          "SEO Optimization",
+        ],
+        socialTitle: "Social Media",
+        copyright: "© 2026 NorthSouth. All rights reserved.",
+      },
     },
 
     // Profile page
@@ -207,13 +405,15 @@ const translations = {
     // Navbar
     nav: {
       home: "Beranda",
-      about: "Tentang Kami",
+      about: "Tentang",
       services: "Layanan",
+      ourWork: "Karya Kami",
       media: "Studio Media",
-      contact: "Hubungi Kami",
+      contact: "Kontak",
       dashboard: "Dasbor Saya",
       booking: "Pesan Layanan",
-      consultation: "Konsultasi Gratis",
+      consultation: "Pesan Konsultasi",
+      login: "Masuk",
     },
 
     // Footer
@@ -235,6 +435,202 @@ const translations = {
       recentWorkDesc:
         "Pilihan proyek terbaru kami yang mendorong pertumbuhan terukur bagi klien.",
       exploreMedia: "Jelajahi Studio Media",
+    },
+
+    landing: {
+      socialProof: {
+        label: "Dipercaya oleh",
+      },
+      hero: {
+        title: "Skalakan Bisnis Anda dengan Solusi Digital yang Mengonversi",
+        titleLines: [
+          "Skalakan Bisnis Anda",
+          "Dengan Solusi Digital yang Mengonversi",
+        ],
+        subtitle:
+          "Pengembangan Website, Branding, Pemasaran Performa, dan Analitik — dikelola dalam satu tempat.",
+        ctaPrimary: "Pesan Konsultasi Gratis",
+        ctaSecondary: "Lihat Karya Kami",
+        trustStars: "⭐⭐⭐⭐⭐ Dipercaya 120+ bisnis",
+        trustText: "Bergabung dengan perusahaan yang tumbuh dengan strategi digital terukur.",
+        trustTags: "Website • Branding • Iklan • Analitik",
+      },
+      whyChoose: {
+        title: "Mengapa NorthSouth",
+        items: [
+          { title: "Pengiriman Cepat", description: "Kami bergerak cepat tanpa mengorbankan kualitas." },
+          { title: "Berbasis Data", description: "Setiap keputusan didukung analitik." },
+          { title: "Desain Modern", description: "Dirancang untuk kegunaan dan konversi." },
+          { title: "Dukungan Dedikasi", description: "Pendampingan di setiap langkah." },
+        ],
+      },
+      services: {
+        title: "Layanan Kami",
+        subtitle: "Kemampuan digital menyeluruh untuk mengembangkan merek dan pendapatan Anda.",
+        learnMore: "Pelajari Lebih",
+        items: [
+          {
+            title: "Pengembangan Website",
+            description: "Website cepat dan fokus konversi yang dirancang untuk pertumbuhan.",
+          },
+          {
+            title: "Desain UI/UX",
+            description: "Antarmuka premium yang memandu pengguna bertindak.",
+          },
+          {
+            title: "Pemasaran Digital",
+            description: "Kampanye yang menjangkau audiens tepat pada waktu tepat.",
+          },
+          {
+            title: "Optimasi SEO",
+            description: "Visibilitas organik yang bertambah setiap bulan.",
+          },
+          {
+            title: "Strategi Merek",
+            description: "Positioning dan identitas yang menonjol di pasar ramai.",
+          },
+          {
+            title: "Analitik Data",
+            description: "Wawasan jelas agar setiap anggaran pemasaran bekerja lebih keras.",
+          },
+        ],
+      },
+      metrics: {
+        title: "Hasil yang Berarti",
+        subtitle: "Dampak terukur di setiap proyek.",
+        items: [
+          { value: 120, suffix: "+", label: "Proyek Diselesaikan", decimals: 0 },
+          { value: 95, suffix: "%", label: "Kepuasan Klien", decimals: 0 },
+          { value: 300, suffix: "%", label: "Pertumbuhan Rata-rata", decimals: 0 },
+          { value: 24, suffix: "/7", label: "Dukungan", decimals: 0 },
+        ],
+      },
+      portfolio: {
+        title: "Proyek yang Memberikan Hasil",
+        subtitle: "Hasil nyata dari merek yang telah kami bantu skalakan.",
+        viewAll: "Lihat Portofolio Lengkap",
+        viewProject: "Lihat Proyek",
+        items: [
+          {
+            name: "Harlow Bakery",
+            category: "E-commerce",
+            result: "+120% pertumbuhan traffic",
+            description: "Redesain funnel penuh dan SEO yang menggandakan jangkauan organik.",
+            tags: ["Desain Web", "SEO", "Analitik"],
+          },
+          {
+            name: "Peak Outfitters",
+            category: "Ritel",
+            result: "+45% peningkatan konversi",
+            description: "Pengalaman toko premium dengan integrasi pemasaran performa.",
+            tags: ["Branding", "Desain Web", "Iklan"],
+          },
+          {
+            name: "Luna Spa",
+            category: "Perhotelan",
+            result: "+300% engagement",
+            description: "Refresh merek dan sistem konten yang meningkatkan sosial media.",
+            tags: ["Branding", "Konten", "Analitik"],
+          },
+        ],
+      },
+      process: {
+        title: "Cara Kami Bekerja",
+        steps: [
+          { title: "Discovery", description: "Memahami tujuan, audiens, dan batasan." },
+          { title: "Strategi", description: "Menetapkan roadmap, KPI, dan metrik sukses." },
+          { title: "Desain", description: "Membuat visual dan alur yang mengonversi." },
+          { title: "Pengembangan", description: "Membangun, menguji, dan mengoptimalkan performa." },
+          { title: "Peluncuran", description: "Meluncurkan, mengukur, dan mengiterasi pertumbuhan." },
+        ],
+      },
+      testimonials: {
+        title: "Apa Kata Klien",
+        items: [
+          {
+            name: "Sarah Chen",
+            company: "Harlow Bakery",
+            companyInitial: "H",
+            avatar: "https://i.pravatar.cc/96?img=5",
+            review:
+              "NorthSouth mengubah kehadiran online kami. Traffic berlipat dalam tiga bulan dan alur pemesanan akhirnya mengonversi.",
+          },
+          {
+            name: "Marcus Webb",
+            company: "Peak Outfitters",
+            companyInitial: "P",
+            avatar: "https://i.pravatar.cc/96?img=12",
+            review:
+              "Profesional, cepat, dan berbasis data. Website baru terbayar dalam kuartal pertama.",
+          },
+          {
+            name: "Elena Rodriguez",
+            company: "Luna Spa",
+            companyInitial: "L",
+            avatar: "https://i.pravatar.cc/96?img=25",
+            review:
+              "Tim mereka langsung memahami merek kami. Karya kreatif yang benar-benar mendorong pemesanan.",
+          },
+          {
+            name: "James Okonkwo",
+            company: "ClearView Law",
+            companyInitial: "C",
+            avatar: "https://i.pravatar.cc/96?img=33",
+            review:
+              "Komunikasi jelas dan hasil luar biasa pada kampanye iklan kami. Sangat direkomendasikan.",
+          },
+        ],
+      },
+      faq: {
+        title: "Pertanyaan Umum",
+        items: [
+          {
+            question: "Berapa lama pengembangan website?",
+            answer:
+              "Sebagian besar proyek memakan 4–8 minggu tergantung ruang lingkup. Kami memberikan timeline detail setelah discovery.",
+          },
+          {
+            question: "Bisakah saya hanya meminta layanan pemasaran?",
+            answer:
+              "Ya. Anda dapat menggunakan kami untuk SEO, iklan berbayar, atau konten tanpa membangun website lengkap.",
+          },
+          {
+            question: "Berapa banyak revisi yang disertakan?",
+            answer:
+              "Setiap paket mencakup dua putaran revisi per fase. Putaran tambahan dapat ditambahkan jika diperlukan.",
+          },
+          {
+            question: "Apakah Anda menyediakan dukungan setelah peluncuran?",
+            answer:
+              "Ya. Kami menawarkan pemeliharaan berkelanjutan, pelaporan analitik, dan retainer optimasi.",
+          },
+        ],
+      },
+      cta: {
+        title: "Siap Mengembangkan Bisnis Anda?",
+        subtitle: "Mari ciptakan sesuatu yang memberikan hasil nyata.",
+        bookConsultation: "Pesan Konsultasi",
+        contactUs: "Hubungi Kami",
+      },
+      footer: {
+        tagline: "Solusi digital premium untuk merek yang ingin tumbuh lebih cerdas.",
+        quickLinks: "Tautan Cepat",
+        quickLinksItems: [
+          { label: "Layanan", href: "/services" },
+          { label: "Dasbor", href: "/dashboard" },
+          { label: "Tentang", href: "/profile" },
+          { label: "Kontak", href: "/#contact" },
+        ],
+        servicesTitle: "Layanan",
+        servicesItems: [
+          "Pengembangan Website",
+          "Desain UI/UX",
+          "Pemasaran Digital",
+          "Optimasi SEO",
+        ],
+        socialTitle: "Media Sosial",
+        copyright: "© 2026 NorthSouth. Hak cipta dilindungi.",
+      },
     },
 
     // Profile page
